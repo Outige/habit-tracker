@@ -74,6 +74,7 @@ function resetTime(event) {
         if (counts[i] == count) {
             // console.log(i)
             habitData[i]['start'] = new Date()
+            count.innerText = `0 days`
         }
     }
 }
