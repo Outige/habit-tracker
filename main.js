@@ -1,5 +1,4 @@
 let habitZone = document.getElementsByClassName('habit-zone')[0];
-let resetButtons = document.getElementsByClassName('reset-button');
 
 function refreshHabitZone() {
     habitZone.innerHTML = '' // TODO: is this shoddy?
@@ -62,6 +61,22 @@ function refreshHabitZone() {
 }
 
 refreshHabitZone()
+
+let resetButtons = document.getElementsByClassName('reset-button');
+for (var i = 0; i < resetButtons.length; i++) {
+    resetButtons[i].addEventListener('click', resetTime)
+}
+
+function resetTime(event) {
+    var count = event.target.parentElement.parentElement.getElementsByClassName('count')[0]
+    var counts = document.getElementsByClassName('count')
+    for (var i = 0; i < counts.length; i++) {
+        if (counts[i] == count) {
+            // console.log(i)
+            habitData[i]['start'] = new Date()
+        }
+    }
+}
 
 // function foo() {
 //     console.log('foo')
