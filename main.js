@@ -72,7 +72,7 @@ refreshHabitZone()
 function refreshCount(countDivs) {
     let today = new Date()
     for (var i = 0; i < countDivs.length; i++) {
-        var d = new Date(habitData[key]['start'])
+        var d = new Date(habitData[i]['start'])
         countDivs[i].innerText = `${((today-d)/(1000*60*60*24)).toFixed(5)} days`
     }
 }
