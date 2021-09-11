@@ -10,11 +10,19 @@ function refreshHabitZone() {
         },
         1: {
             title: 'Masturbation',
-            start: 'Thu Sep 05 2021 22:00:12 GMT+0200 (South Africa Standard Time)',
+            start: 'Thu Sep 08 2021 22:00:12 GMT+0200 (South Africa Standard Time)',
         },
         2: {
-            title: 'Orgasm',
-            start: 'Thu Sep 02 2021 22:00:12 GMT+0200 (South Africa Standard Time)',
+            title: 'Exercise',
+            start: 'Thu Aug 20 2021 22:00:12 GMT+0200 (South Africa Standard Time)',
+        },
+        3: {
+            title: 'Food binge',
+            start: 'Thu Sep 10 2021 22:00:12 GMT+0200 (South Africa Standard Time)',
+        },
+        4: {
+            title: 'Study',
+            start: 'Thu Sep 8 2021 22:00:12 GMT+0200 (South Africa Standard Time)',
         },
     }
     // console.log(habitData)
