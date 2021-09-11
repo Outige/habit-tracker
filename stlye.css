@@ -40,3 +40,7 @@ body {
     color: black;
     border: 5px solid black;
 }
+
+button {
+    margin-right: 1rem;
+}
