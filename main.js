@@ -26,7 +26,7 @@ function refreshHabitZone() {
     //         start: 'Thu Sep 8 2021 22:00:12 GMT+0200 (South Africa Standard Time)',
     //     },
     // }
-    // updateHabitData(habitData) // TODO: I think this is just a waste of time and it's for testing where I want set data
+    updateHabitData(habitData) // TODO: I think this is just a waste of time and it's for testing where I want set data
 
     for (key in habitData) {
         // object construction
@@ -118,7 +118,9 @@ function refreshCount(countDivs) {
 }
 
 function getHabitData() {
-    return(JSON.parse(localStorage.getItem("habitData")));
+    var habitData = JSON.parse(localStorage.getItem("habitData"))
+    if (habitData == null) return ({})
+    return(habitData);
 }
 
 function updateHabitData(newHabitData) {
@@ -139,7 +141,6 @@ newHabitButton.addEventListener('click', addNewHabit)
 function addNewHabit() {
     var habitData = getHabitData()
     var newHabitName = document.getElementsByTagName('input')[0].value
-
     var nuberHabits = 0
     for (key in habitData) {
         if (habitData.hasOwnProperty(key)) nuberHabits++;
@@ -148,6 +149,7 @@ function addNewHabit() {
         title: newHabitName,
         start: new Date(),
     }
+    console.log(JSON.stringify(habitData))
     updateHabitData(habitData)
     refreshHabitZone()
 }
