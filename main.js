@@ -64,9 +64,21 @@ function refreshHabitZone() {
         habit.appendChild(habitBody)
 
         habitZone.appendChild(habit)
-
-
     }
+
+    // add new habit inputs
+    var newHabit = document.createElement('div')
+    newHabit.classList.add('new-habit')
+    var newHabitName = document.createElement('input')
+    newHabitName.type = "text"
+    newHabitName.value = "(enter habit name)"
+    var newHabitButton = document.createElement('button')
+    newHabitButton.classList.add('new-button')
+    newHabitButton.innerText = "New Habit"
+
+    newHabit.appendChild(newHabitName)
+    newHabit.appendChild(newHabitButton)
+    habitZone.appendChild(newHabit)
 }
 
 refreshHabitZone()
@@ -120,3 +132,22 @@ setInterval(refreshCount, 1000, countDivs)
 // // Retrieve
 // var dat = JSON.parse(localStorage.getItem("habitData"));
 // console.log(dat)
+
+let newHabitButton = document.getElementsByClassName('new-button')[0]
+newHabitButton.addEventListener('click', addNewHabit)
+
+function addNewHabit() {
+    var habitData = getHabitData()
+    var newHabitName = document.getElementsByTagName('input')[0].value
+
+    var nuberHabits = 0
+    for (key in habitData) {
+        if (habitData.hasOwnProperty(key)) nuberHabits++;
+    }
+    habitData[nuberHabits] = {
+        title: newHabitName,
+        start: new Date(),
+    }
+    updateHabitData(habitData)
+    refreshHabitZone()
+}
