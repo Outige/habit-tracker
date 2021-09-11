@@ -1,4 +1,5 @@
 let habitZone = document.getElementsByClassName('habit-zone')[0];
+let newHabitButton = document.getElementsByClassName('new-button')[0]
 
 function refreshHabitZone() {
     habitZone.innerHTML = '' // TODO: is this shoddy?
@@ -79,6 +80,8 @@ function refreshHabitZone() {
     newHabit.appendChild(newHabitName)
     newHabit.appendChild(newHabitButton)
     habitZone.appendChild(newHabit)
+
+    newHabitButton.addEventListener('click', addNewHabit)
 }
 
 refreshHabitZone()
@@ -134,9 +137,6 @@ setInterval(refreshCount, 1000, countDivs)
 // // Retrieve
 // var dat = JSON.parse(localStorage.getItem("habitData"));
 // console.log(dat)
-
-let newHabitButton = document.getElementsByClassName('new-button')[0]
-newHabitButton.addEventListener('click', addNewHabit)
 
 function addNewHabit() {
     var habitData = getHabitData()
