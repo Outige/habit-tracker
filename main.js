@@ -8,56 +8,58 @@ function refreshHabitZone() {
     // habitData = {
     //     0: {
     //         title: 'Porn',
-    //         start: 'Thu Sep 08 2021 22:00:12 GMT+0200 (South Africa Standard Time)',
+    //         start: ['Thu Sep 08 2021 22:00:12 GMT+0200 (South Africa Standard Time)'],
     //     },
     //     1: {
     //         title: 'Masturbation',
-    //         start: 'Thu Sep 08 2021 22:00:12 GMT+0200 (South Africa Standard Time)',
+    //         start: ['Thu Sep 08 2021 22:00:12 GMT+0200 (South Africa Standard Time)'],
     //     },
     //     2: {
     //         title: 'Exercise',
-    //         start: 'Thu Aug 20 2021 22:00:12 GMT+0200 (South Africa Standard Time)',
+    //         start: ['Thu Aug 20 2021 22:00:12 GMT+0200 (South Africa Standard Time)'],
     //     },
     //     3: {
     //         title: 'Food binge',
-    //         start: 'Thu Sep 10 2021 22:00:12 GMT+0200 (South Africa Standard Time)',
+    //         start: ['Thu Sep 10 2021 22:00:12 GMT+0200 (South Africa Standard Time)'],
     //     },
     //     4: {
     //         title: 'Study',
-    //         start: 'Thu Sep 8 2021 22:00:12 GMT+0200 (South Africa Standard Time)',
+    //         start: ['Thu Sep 08 2021 22:00:12 GMT+0200 (South Africa Standard Time)'],
     //     },
     // }
     // updateHabitData(habitData) // TODO: I think this is just a waste of time and it's for testing where I want set data
 
     for (key in habitData) {
         // object construction
-        let habit = document.createElement('div');
+        var habit = document.createElement('div');
         habit.classList.add('habit');
         
-        let habitTitle = document.createElement('div');
+        var habitTitle = document.createElement('div');
         habitTitle.classList.add('habit-title')
         
-        let habitTitleSpan = document.createElement('span');
+        var habitTitleSpan = document.createElement('span');
         habitTitleSpan.innerHTML = habitData[key]['title']
         
-        let habitBody = document.createElement('div');
+        var habitBody = document.createElement('div');
         habitBody.classList.add('habit-body')
-        let count = document.createElement('div')
+        var count = document.createElement('div')
         count.classList.add('count')
-        let today = new Date()
-        let d = new Date(habitData[key]['start'])
+        var today = new Date()
+        // let d = new Date(habitData[key]['start'])
+        var startDays = habitData[key]['start']
+        var d = new Date(startDays[startDays.length-1])
         count.innerText = `${((today-d)/(1000*60*60*24)).toFixed(5)} days`
 
 
-        let habitReset = document.createElement('div')
+        var habitReset = document.createElement('div')
         habitReset.classList.add('reset-div')
-        let habitResetButton = document.createElement('button')
+        var habitResetButton = document.createElement('button')
         habitResetButton.classList.add('reset-button')
         habitResetButton.innerText = 'Reset'
         habitResetButton.addEventListener('click', resetTime)
         habitReset.appendChild(habitResetButton)
 
-        let habitDeleteButton = document.createElement('button')
+        var habitDeleteButton = document.createElement('button')
         habitDeleteButton.classList.add('delete-button')
         habitDeleteButton.innerText = 'Delete'
         habitDeleteButton.addEventListener('click', deleteHabit)
@@ -106,11 +108,12 @@ function resetTime(event) {
     var habitData = getHabitData()
     for (var i = 0; i < counts.length; i++) {
         if (counts[i] == count) {
-            habitData[i]['start'] = new Date()
+            habitData[i]['start'].push(new Date())
             count.innerText = `0 days`
         }
     }
     updateHabitData(habitData)
+    refreshHabitZone()
 }
 
 // function foo() {
@@ -123,7 +126,8 @@ function refreshCount(countDivs) {
     let today = new Date()
     var habitData = getHabitData()
     for (var i = 0; i < countDivs.length; i++) {
-        var d = new Date(habitData[i]['start'])
+        var startDays = habitData[i]['start']
+        var d = new Date(startDays[startDays.length-1])
         countDivs[i].innerText = `${((today-d)/(1000*60*60*24)).toFixed(5)} days`
     }
 }
@@ -155,7 +159,7 @@ function addNewHabit() {
     }
     habitData[nuberHabits] = {
         title: newHabitName,
-        start: new Date(),
+        start: [new Date()],
     }
     updateHabitData(habitData)
     refreshHabitZone()
