@@ -27,7 +27,7 @@ function refreshHabitZone() {
     //         start: 'Thu Sep 8 2021 22:00:12 GMT+0200 (South Africa Standard Time)',
     //     },
     // }
-    updateHabitData(habitData) // TODO: I think this is just a waste of time and it's for testing where I want set data
+    // updateHabitData(habitData) // TODO: I think this is just a waste of time and it's for testing where I want set data
 
     for (key in habitData) {
         // object construction
@@ -54,7 +54,16 @@ function refreshHabitZone() {
         let habitResetButton = document.createElement('button')
         habitResetButton.classList.add('reset-button')
         habitResetButton.innerText = 'Reset'
+        habitResetButton.addEventListener('click', resetTime)
         habitReset.appendChild(habitResetButton)
+
+        let habitDeleteButton = document.createElement('button')
+        habitDeleteButton.classList.add('delete-button')
+        habitDeleteButton.innerText = 'Delete'
+        habitDeleteButton.addEventListener('click', deleteHabit)
+        habitReset.appendChild(habitDeleteButton)
+        // <button class="delete-button">Delete</button>
+
 
         // child appending
         habitTitle.appendChild(habitTitleSpan)
@@ -86,10 +95,10 @@ function refreshHabitZone() {
 
 refreshHabitZone()
 
-let resetButtons = document.getElementsByClassName('reset-button');
-for (var i = 0; i < resetButtons.length; i++) {
-    resetButtons[i].addEventListener('click', resetTime)
-}
+// let resetButtons = document.getElementsByClassName('reset-button');
+// for (var i = 0; i < resetButtons.length; i++) {
+//     resetButtons[i].addEventListener('click', resetTime)
+// }
 
 function resetTime(event) {
     var count = event.target.parentElement.parentElement.getElementsByClassName('count')[0]
@@ -97,7 +106,6 @@ function resetTime(event) {
     var habitData = getHabitData()
     for (var i = 0; i < counts.length; i++) {
         if (counts[i] == count) {
-            // console.log(i)
             habitData[i]['start'] = new Date()
             count.innerText = `0 days`
         }
@@ -149,7 +157,38 @@ function addNewHabit() {
         title: newHabitName,
         start: new Date(),
     }
-    console.log(JSON.stringify(habitData))
     updateHabitData(habitData)
     refreshHabitZone()
+}
+
+function deleteHabit(event) {
+    var habitData = getHabitData()
+    var habit = event.target.parentElement.parentElement.parentElement
+    var habits = document.getElementsByClassName('habit')
+    for (var i = 0; i < habits.length; i++) {
+        if (habits[i] == habit) {
+            console.log(i)
+            delete habitData[i]
+            for (var j = i+1; j < habits.length; j++) {
+                habitData[j-1] = habitData[j]
+                if (j == habits.length-1) delete habitData[j]
+            }
+
+            break
+        }
+    }
+    updateHabitData(habitData)
+    refreshHabitZone()
+
+    // var count = event.target.parentElement.parentElement.getElementsByClassName('count')[0]
+    // var counts = document.getElementsByClassName('count')
+    // var habitData = getHabitData()
+    // for (var i = 0; i < counts.length; i++) {
+    //     if (counts[i] == count) {
+    //         // console.log(i)
+    //         habitData[i]['start'] = new Date()
+    //         count.innerText = `0 days`
+    //     }
+    // }
+    // updateHabitData(habitData)
 }
