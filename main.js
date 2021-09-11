@@ -3,29 +3,30 @@ let habitZone = document.getElementsByClassName('habit-zone')[0];
 function refreshHabitZone() {
     habitZone.innerHTML = '' // TODO: is this shoddy?
 
-    habitData = {
-        0: {
-            title: 'Porn',
-            start: 'Thu Sep 08 2021 22:00:12 GMT+0200 (South Africa Standard Time)',
-        },
-        1: {
-            title: 'Masturbation',
-            start: 'Thu Sep 08 2021 22:00:12 GMT+0200 (South Africa Standard Time)',
-        },
-        2: {
-            title: 'Exercise',
-            start: 'Thu Aug 20 2021 22:00:12 GMT+0200 (South Africa Standard Time)',
-        },
-        3: {
-            title: 'Food binge',
-            start: 'Thu Sep 10 2021 22:00:12 GMT+0200 (South Africa Standard Time)',
-        },
-        4: {
-            title: 'Study',
-            start: 'Thu Sep 8 2021 22:00:12 GMT+0200 (South Africa Standard Time)',
-        },
-    }
-    // console.log(habitData)
+    var habitData = getHabitData()
+    // habitData = {
+    //     0: {
+    //         title: 'Porn',
+    //         start: 'Thu Sep 08 2021 22:00:12 GMT+0200 (South Africa Standard Time)',
+    //     },
+    //     1: {
+    //         title: 'Masturbation',
+    //         start: 'Thu Sep 08 2021 22:00:12 GMT+0200 (South Africa Standard Time)',
+    //     },
+    //     2: {
+    //         title: 'Exercise',
+    //         start: 'Thu Aug 20 2021 22:00:12 GMT+0200 (South Africa Standard Time)',
+    //     },
+    //     3: {
+    //         title: 'Food binge',
+    //         start: 'Thu Sep 10 2021 22:00:12 GMT+0200 (South Africa Standard Time)',
+    //     },
+    //     4: {
+    //         title: 'Study',
+    //         start: 'Thu Sep 8 2021 22:00:12 GMT+0200 (South Africa Standard Time)',
+    //     },
+    // }
+    // updateHabitData(habitData) // TODO: I think this is just a waste of time and it's for testing where I want set data
 
     for (key in habitData) {
         // object construction
@@ -78,6 +79,7 @@ for (var i = 0; i < resetButtons.length; i++) {
 function resetTime(event) {
     var count = event.target.parentElement.parentElement.getElementsByClassName('count')[0]
     var counts = document.getElementsByClassName('count')
+    var habitData = getHabitData()
     for (var i = 0; i < counts.length; i++) {
         if (counts[i] == count) {
             // console.log(i)
@@ -85,6 +87,7 @@ function resetTime(event) {
             count.innerText = `0 days`
         }
     }
+    updateHabitData(habitData)
 }
 
 // function foo() {
@@ -95,12 +98,25 @@ function resetTime(event) {
 
 function refreshCount(countDivs) {
     let today = new Date()
+    var habitData = getHabitData()
     for (var i = 0; i < countDivs.length; i++) {
         var d = new Date(habitData[i]['start'])
         countDivs[i].innerText = `${((today-d)/(1000*60*60*24)).toFixed(5)} days`
     }
 }
 
+function getHabitData() {
+    return(JSON.parse(localStorage.getItem("habitData")));
+}
+
+function updateHabitData(newHabitData) {
+    localStorage.setItem("habitData", JSON.stringify(newHabitData));
+}
 // setInterval(refreshHabitZone, 1)
 countDivs = document.getElementsByClassName('count')
 setInterval(refreshCount, 1000, countDivs)
+
+// localStorage.setItem("habitData", JSON.stringify(habitData));
+// // Retrieve
+// var dat = JSON.parse(localStorage.getItem("habitData"));
+// console.log(dat)
