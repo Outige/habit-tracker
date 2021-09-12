@@ -101,6 +101,9 @@ function refreshHabitZone() {
     var newHabitName = document.createElement('input')
     newHabitName.type = "text"
     newHabitName.value = "(enter habit name)"
+    newHabitName.addEventListener('focus', function(event) {
+        event.target.value = ''
+    })
     var newHabitButton = document.createElement('button')
     newHabitButton.classList.add('new-button')
     newHabitButton.innerText = "New Habit"
