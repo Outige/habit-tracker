@@ -1,11 +1,12 @@
-let habitZone = document.getElementsByClassName('habit-zone')[0];
-let newHabitButton = document.getElementsByClassName('new-button')[0]
+/*----------MAIN----------*/
+refreshHabitZone()
 
-function refreshHabitZone() {
-    habitZone.innerHTML = '' // TODO: is this shoddy?
+/*-----TICKS-----*/
+setInterval(refreshTime, 1000)
 
-    var habitData = getHabitData()
-    // habitData = {
+
+
+    // var habitData = {
     //     0: {
     //         title: 'Porn',
     //         start: ['Thu Sep 08 2021 22:00:12 GMT+0200 (South Africa Standard Time)'],
@@ -27,10 +28,27 @@ function refreshHabitZone() {
     //         start: ['Thu Sep 08 2021 22:00:12 GMT+0200 (South Africa Standard Time)'],
     //     },
     // }
-    // updateHabitData(habitData) // TODO: I think this is just a waste of time and it's for testing where I want set data
+    // updateHabitData(habitData)
 
+/*----------FUNCTIONS----------*/
+function getHabitData() {
+    var habitData = JSON.parse(localStorage.getItem("habitData"))
+    if (habitData == null) return ({})
+    return(habitData);
+}
+
+function updateHabitData(newHabitData) {
+    localStorage.setItem("habitData", JSON.stringify(newHabitData));
+}
+
+function refreshHabitZone() {
+    var habitZone = document.getElementsByClassName('habit-zone')[0];
+    habitZone.innerHTML = '' // TODO: is this shoddy?
+
+    var habitData = getHabitData()
+
+    // loop through and display all habits
     for (key in habitData) {
-        // object construction
         var habit = document.createElement('div');
         habit.classList.add('habit');
         
@@ -40,17 +58,18 @@ function refreshHabitZone() {
         var habitTitleSpan = document.createElement('span');
         habitTitleSpan.innerHTML = habitData[key]['title']
         
+        // count div
         var habitBody = document.createElement('div');
         habitBody.classList.add('habit-body')
         var count = document.createElement('div')
         count.classList.add('count')
         var today = new Date()
-        // let d = new Date(habitData[key]['start'])
         var startDays = habitData[key]['start']
         var d = new Date(startDays[startDays.length-1])
         count.innerText = `${((today-d)/(1000*60*60*24)).toFixed(5)} days`
 
 
+        // reset button
         var habitReset = document.createElement('div')
         habitReset.classList.add('reset-div')
         var habitResetButton = document.createElement('button')
@@ -59,48 +78,53 @@ function refreshHabitZone() {
         habitResetButton.addEventListener('click', resetTime)
         habitReset.appendChild(habitResetButton)
 
+        // delete button
         var habitDeleteButton = document.createElement('button')
         habitDeleteButton.classList.add('delete-button')
         habitDeleteButton.innerText = 'Delete'
         habitDeleteButton.addEventListener('click', deleteHabit)
         habitReset.appendChild(habitDeleteButton)
-        // <button class="delete-button">Delete</button>
 
 
-        // child appending
+        // adppend all the childeren
         habitTitle.appendChild(habitTitleSpan)
         habit.appendChild(habitTitle)
-
         habitBody.appendChild(count)
         habitBody.appendChild(habitReset)
         habit.appendChild(habitBody)
-
         habitZone.appendChild(habit)
     }
 
-    // add new habit inputs
+    // add new habit option
     var newHabit = document.createElement('div')
     newHabit.classList.add('new-habit')
     var newHabitName = document.createElement('input')
     newHabitName.type = "text"
     newHabitName.value = "(enter habit name)"
+    newHabitName.addEventListener('focus', function(event) {
+        event.target.value = ''
+    })
     var newHabitButton = document.createElement('button')
     newHabitButton.classList.add('new-button')
     newHabitButton.innerText = "New Habit"
 
+    // add new habit option
     newHabit.appendChild(newHabitName)
     newHabit.appendChild(newHabitButton)
     habitZone.appendChild(newHabit)
-
     newHabitButton.addEventListener('click', addNewHabit)
 }
 
-refreshHabitZone()
-
-// let resetButtons = document.getElementsByClassName('reset-button');
-// for (var i = 0; i < resetButtons.length; i++) {
-//     resetButtons[i].addEventListener('click', resetTime)
-// }
+function refreshTime() {
+    var countDivs = document.getElementsByClassName('count') 
+    let today = new Date()
+    var habitData = getHabitData()
+    for (var i = 0; i < countDivs.length; i++) {
+        var startDays = habitData[i]['start']
+        var d = new Date(startDays[startDays.length-1])
+        countDivs[i].innerText = `${((today-d)/(1000*60*60*24)).toFixed(5)} days`
+    }
+}
 
 function resetTime(event) {
     var count = event.target.parentElement.parentElement.getElementsByClassName('count')[0]
@@ -115,40 +139,6 @@ function resetTime(event) {
     updateHabitData(habitData)
     refreshHabitZone()
 }
-
-// function foo() {
-//     console.log('foo')
-// }
-
-// foo()
-
-function refreshCount(countDivs) {
-    let today = new Date()
-    var habitData = getHabitData()
-    for (var i = 0; i < countDivs.length; i++) {
-        var startDays = habitData[i]['start']
-        var d = new Date(startDays[startDays.length-1])
-        countDivs[i].innerText = `${((today-d)/(1000*60*60*24)).toFixed(5)} days`
-    }
-}
-
-function getHabitData() {
-    var habitData = JSON.parse(localStorage.getItem("habitData"))
-    if (habitData == null) return ({})
-    return(habitData);
-}
-
-function updateHabitData(newHabitData) {
-    localStorage.setItem("habitData", JSON.stringify(newHabitData));
-}
-// setInterval(refreshHabitZone, 1)
-countDivs = document.getElementsByClassName('count')
-setInterval(refreshCount, 1000, countDivs)
-
-// localStorage.setItem("habitData", JSON.stringify(habitData));
-// // Retrieve
-// var dat = JSON.parse(localStorage.getItem("habitData"));
-// console.log(dat)
 
 function addNewHabit() {
     var habitData = getHabitData()
@@ -183,16 +173,4 @@ function deleteHabit(event) {
     }
     updateHabitData(habitData)
     refreshHabitZone()
-
-    // var count = event.target.parentElement.parentElement.getElementsByClassName('count')[0]
-    // var counts = document.getElementsByClassName('count')
-    // var habitData = getHabitData()
-    // for (var i = 0; i < counts.length; i++) {
-    //     if (counts[i] == count) {
-    //         // console.log(i)
-    //         habitData[i]['start'] = new Date()
-    //         count.innerText = `0 days`
-    //     }
-    // }
-    // updateHabitData(habitData)
 }
