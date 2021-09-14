@@ -30,6 +30,14 @@ setInterval(refreshTime, 1000)
     // }
     // updateHabitData(habitData)
 
+/*----------UNTILS----------*/
+function getItemInListIndex(item, list) {
+    for (var i = 0; i < list.length; i++) {
+        if (item == list[i]) return(i)
+    }
+    return(-1)
+}
+
 /*----------FUNCTIONS----------*/
 function getHabitData() {
     var habitData = JSON.parse(localStorage.getItem("habitData"))
@@ -77,6 +85,16 @@ function refreshHabitZone() {
         habitResetButton.innerText = 'Reset'
         habitResetButton.addEventListener('click', resetTime)
         habitReset.appendChild(habitResetButton)
+
+        // undo reset button
+        var habitUndoResetButton = document.createElement('button')
+        habitUndoResetButton.classList.add('undo-reset-button')
+        habitUndoResetButton.innerText = 'Undo Reset'
+        habitReset.appendChild(habitUndoResetButton)
+        // habitUndoResetButton.disabled = true
+        habitUndoResetButton.style.display = 'none'
+        habitUndoResetButton.addEventListener('click', undoReset)
+
 
         // delete button
         var habitDeleteButton = document.createElement('button')
@@ -130,16 +148,32 @@ function resetTime(event) {
     var count = event.target.parentElement.parentElement.getElementsByClassName('count')[0]
     var counts = document.getElementsByClassName('count')
     var habitData = getHabitData()
-    for (var i = 0; i < counts.length; i++) {
-        if (counts[i] == count) {
-            habitData[i]['start'].push(new Date())
-            count.innerText = `0 days`
-        }
-    }
+    var index = getItemInListIndex(count,    counts)
+    habitData[index]['start'].push(new Date())
+    count.innerText = `0 days`
     updateHabitData(habitData)
-    refreshHabitZone()
+    
+    // display undoReset and hide reset
+    var undo = document.getElementsByClassName('undo-reset-button')[index]
+    undo.style.display = 'inline'
+    var reset = document.getElementsByClassName('reset-button')[index]
+    reset.style.display = 'none'
 }
 
+function undoReset(event) {
+    var undos = document.getElementsByClassName('undo-reset-button') // TODO: this will break if undos aren't visible with our implimentation
+    var index = getItemInListIndex(event.target, undos)
+    var habitData = getHabitData()
+    habitData[index]['start'].pop()
+    updateHabitData(habitData)
+
+    // hide undoReset and show reset
+    undos[index].style.display = 'none'
+    var reset = document.getElementsByClassName('reset-button')[index]
+    reset.style.display = 'inline'
+}
+
+// TODO: technically this doesn't have to refresh the habit zone. Can just append the habit to the data and the zone
 function addNewHabit() {
     var habitData = getHabitData()
     var newHabitName = document.getElementsByTagName('input')[0].value
@@ -155,6 +189,7 @@ function addNewHabit() {
     refreshHabitZone()
 }
 
+// TODO: technically this doesn't have to refresh the habit zone. Can just append the habit to the data and the zone
 function deleteHabit(event) {
     var habitData = getHabitData()
     var habit = event.target.parentElement.parentElement.parentElement
