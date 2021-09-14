@@ -150,7 +150,7 @@ function resetTime(event) {
     var habitData = getHabitData()
     var index = getItemInListIndex(count,    counts)
     habitData[index]['start'].push(new Date())
-    count.innerText = `0 days`
+    count.innerText = `0.00000 days`
     updateHabitData(habitData)
     
     // display undoReset and hide reset
@@ -166,6 +166,7 @@ function undoReset(event) {
     var habitData = getHabitData()
     habitData[index]['start'].pop()
     updateHabitData(habitData)
+    refreshTime()
 
     // hide undoReset and show reset
     undos[index].style.display = 'none'
