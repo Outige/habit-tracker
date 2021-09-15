@@ -91,7 +91,6 @@ function refreshHabitZone() {
         habitUndoResetButton.classList.add('undo-reset-button')
         habitUndoResetButton.innerText = 'Undo Reset'
         habitReset.appendChild(habitUndoResetButton)
-        // habitUndoResetButton.disabled = true
         habitUndoResetButton.style.display = 'none'
         habitUndoResetButton.addEventListener('click', undoReset)
 
@@ -102,6 +101,14 @@ function refreshHabitZone() {
         habitDeleteButton.innerText = 'Delete'
         habitDeleteButton.addEventListener('click', deleteHabit)
         habitReset.appendChild(habitDeleteButton)
+
+        // undo delete button
+        var habitUndoDeleteButton = document.createElement('button')
+        habitUndoDeleteButton.classList.add('undo-delete-button')
+        habitUndoDeleteButton.innerText = 'Undo Delete'
+        habitReset.appendChild(habitUndoDeleteButton)
+        // habitUndoDeleteButton.style.display = 'none'
+        habitUndoDeleteButton.addEventListener('click', undoDelete)
 
 
         // adppend all the childeren
@@ -172,6 +179,10 @@ function undoReset(event) {
     undos[index].style.display = 'none'
     var reset = document.getElementsByClassName('reset-button')[index]
     reset.style.display = 'inline'
+}
+
+function undoDelete() {
+    console.log('undo delete')
 }
 
 // TODO: technically this doesn't have to refresh the habit zone. Can just append the habit to the data and the zone
