@@ -1,3 +1,6 @@
+/*----------IMPORTS----------*/
+import {deleteHabitByIndex} from './crud.js'
+
 /*----------MAIN----------*/
 refreshHabitZone()
 
@@ -6,29 +9,29 @@ setInterval(refreshTime, 1000)
 
 
 
-    // var habitData = {
-    //     0: {
-    //         title: 'Porn',
-    //         start: ['Thu Sep 08 2021 22:00:12 GMT+0200 (South Africa Standard Time)'],
-    //     },
-    //     1: {
-    //         title: 'Masturbation',
-    //         start: ['Thu Sep 08 2021 22:00:12 GMT+0200 (South Africa Standard Time)'],
-    //     },
-    //     2: {
-    //         title: 'Exercise',
-    //         start: ['Thu Aug 20 2021 22:00:12 GMT+0200 (South Africa Standard Time)'],
-    //     },
-    //     3: {
-    //         title: 'Food binge',
-    //         start: ['Thu Sep 10 2021 22:00:12 GMT+0200 (South Africa Standard Time)'],
-    //     },
-    //     4: {
-    //         title: 'Study',
-    //         start: ['Thu Sep 08 2021 22:00:12 GMT+0200 (South Africa Standard Time)'],
-    //     },
-    // }
-    // updateHabitData(habitData)
+var habitData = {
+    0: {
+        title: 'Porn',
+        start: ['Thu Sep 08 2021 22:00:12 GMT+0200 (South Africa Standard Time)'],
+    },
+    1: {
+        title: 'Masturbation',
+        start: ['Thu Sep 08 2021 22:00:12 GMT+0200 (South Africa Standard Time)'],
+    },
+    2: {
+        title: 'Exercise',
+        start: ['Thu Aug 20 2021 22:00:12 GMT+0200 (South Africa Standard Time)'],
+    },
+    3: {
+        title: 'Food binge',
+        start: ['Thu Sep 10 2021 22:00:12 GMT+0200 (South Africa Standard Time)'],
+    },
+    4: {
+        title: 'Study',
+        start: ['Thu Sep 08 2021 22:00:12 GMT+0200 (South Africa Standard Time)'],
+    },
+}
+updateHabitData(habitData)
 
 /*----------UNTILS----------*/
 function getItemInListIndex(item, list) {
@@ -53,10 +56,9 @@ function refreshHabitZone() {
     var habitZone = document.getElementsByClassName('habit-zone')[0];
     habitZone.innerHTML = '' // TODO: is this shoddy?
 
-    var habitData = getHabitData()
-
     // loop through and display all habits
-    for (key in habitData) {
+    var habitData = getHabitData()
+    for (var key in habitData) {
         var habit = document.createElement('div');
         habit.classList.add('habit');
         
@@ -201,23 +203,26 @@ function addNewHabit() {
     refreshHabitZone()
 }
 
+
 // TODO: technically this doesn't have to refresh the habit zone. Can just append the habit to the data and the zone
 function deleteHabit(event) {
     var habitData = getHabitData()
     var habit = event.target.parentElement.parentElement.parentElement
     var habits = document.getElementsByClassName('habit')
-    for (var i = 0; i < habits.length; i++) {
-        if (habits[i] == habit) {
-            console.log(i)
-            delete habitData[i]
-            for (var j = i+1; j < habits.length; j++) {
-                habitData[j-1] = habitData[j]
-                if (j == habits.length-1) delete habitData[j]
-            }
+    // for (var i = 0; i < habits.length; i++) {
+    //     if (habits[i] == habit) {
+    //         console.log(i)
+    //         delete habitData[i]
+    //         for (var j = i+1; j < habits.length; j++) {
+    //             habitData[j-1] = habitData[j]
+    //             if (j == habits.length-1) delete habitData[j]
+    //         }
 
-            break
-        }
-    }
+    //         break
+    //     }
+    // }
+    var index = getItemInListIndex(habit, habits)
+    deleteHabitByIndex(habitData, index)
     updateHabitData(habitData)
     refreshHabitZone()
 }
