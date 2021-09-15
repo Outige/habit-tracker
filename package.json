@@ -1,0 +1,23 @@
+{
+  "name": "habit-tracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Outige/habit-tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Outige/habit-tracker/issues"
+  },
+  "homepage": "https://github.com/Outige/habit-tracker#readme",
+  "devDependencies": {
+    "jest": "^27.2.0"
+  }
+}
