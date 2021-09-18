@@ -1,5 +1,7 @@
 /*----------IMPORTS----------*/
 import {deleteHabitByIndex} from './crud.js'
+import {findNextHabitIndex} from './crud.js'
+import {addNewHabitByIndex} from './crud.js'
 // const deleteHabitByIndex  = require('./crud.js')
 // const deleteHabitByIndex  = require('./crud.js')
 
@@ -196,13 +198,15 @@ function addNewHabit() {
     var habitData = getHabitData()
     var newHabitName = document.getElementsByTagName('input')[0].value
     var nuberHabits = 0
-    for (key in habitData) {
+    for (var key in habitData) {
         if (habitData.hasOwnProperty(key)) nuberHabits++;
     }
-    habitData[nuberHabits] = {
+    var index = findNextHabitIndex(habitData)
+    var habit = {
         title: newHabitName,
         start: [new Date()],
     }
+    addNewHabitByIndex(habitData, habit, index)
     updateHabitData(habitData)
     refreshHabitZone()
 }
@@ -213,18 +217,6 @@ function deleteHabit(event) {
     var habitData = getHabitData()
     var habit = event.target.parentElement.parentElement.parentElement
     var habits = document.getElementsByClassName('habit')
-    // for (var i = 0; i < habits.length; i++) {
-    //     if (habits[i] == habit) {
-    //         console.log(i)
-    //         delete habitData[i]
-    //         for (var j = i+1; j < habits.length; j++) {
-    //             habitData[j-1] = habitData[j]
-    //             if (j == habits.length-1) delete habitData[j]
-    //         }
-
-    //         break
-    //     }
-    // }
     var index = getItemInListIndex(habit, habits)
     deleteHabitByIndex(habitData, index)
     updateHabitData(habitData)
