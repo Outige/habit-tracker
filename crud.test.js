@@ -1,5 +1,4 @@
-// const deleteHabitByIndex  = require('./crud.js')
-// import { deleteHabitByIndex } from './crud.js'
+import { deleteHabitByIndex } from './crud.js'
 
 
 test('last index delete', function() {

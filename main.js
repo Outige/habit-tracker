@@ -1,5 +1,9 @@
 /*----------IMPORTS----------*/
 import {deleteHabitByIndex} from './crud.js'
+// const deleteHabitByIndex  = require('./crud.js')
+// const deleteHabitByIndex  = require('./crud.js')
+
+
 
 /*----------MAIN----------*/
 refreshHabitZone()
