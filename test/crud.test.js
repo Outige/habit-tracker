@@ -1,11 +1,10 @@
-import { findNextHabitIndex, addNewHabitByIndex, deleteHabitByIndex } from './crud.js'
+import { findNextHabitIndex, addNewHabitByIndex, deleteHabitByIndex } from './../crud.js'
 
 /* ADD */
 test('Find next habit index', function() {
     expect(findNextHabitIndex({})).toEqual(0)
     expect(findNextHabitIndex({0:0})).toEqual(1)
     expect(findNextHabitIndex({0:0, 1:1})).toEqual(2)
-    findNextHabitIndex({0:0, 6:1})
     expect(findNextHabitIndex({0:0, 6:1})).toEqual(7)
 })
 
@@ -13,9 +12,14 @@ test('Add habit', function() {
     var habitData = {0: 0, 1: 1, 2: 2}
     addNewHabitByIndex(habitData, 'data', 3)
     expect(habitData).toEqual({0:0, 1:1, 2:2, 3:'data'})
-    addNewHabitByIndex(habitData, 'data', 3)
-    expect(habitData).toEqual({0:0, 1:1, 2:2, 3:'data'})
-    expect(habitData).toEqual({0:0, 1:'data', 2:2, 3:'data'})
+    addNewHabitByIndex(habitData, 'new data', 3)
+    expect(habitData).toEqual({0:0, 1:1, 2:2, 3:'new data'})
+    addNewHabitByIndex(habitData, '', 100)
+    expect(habitData).toEqual({0:0, 1:1, 2:2, 3:'new data', 100:''})
+    expect(() => {
+        addNewHabitByIndex(habitData, '', -1)
+    }).toThrow(RangeError)
+
 })
 
 /* DELETE */

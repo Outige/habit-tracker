@@ -2,9 +2,8 @@
 export function findNextHabitIndex(habitData) {
     if (Object.keys(habitData).length == 0) return(0)
     var maxIndex = 0
-    for (var key in Object.keys(habitData)) {
+    for (var key in habitData) {
         key = parseInt(key)
-        console.log(key)
         if (key > maxIndex) {
             maxIndex = key
         }   
@@ -13,6 +12,9 @@ export function findNextHabitIndex(habitData) {
 }
 
 export function addNewHabitByIndex(habitData, habit, index) {
+    if (index < 0) {
+        throw new RangeError('Negative index for new habit')
+    }
     habitData[index] = habit
 }
 

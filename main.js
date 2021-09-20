@@ -2,10 +2,31 @@
 import {deleteHabitByIndex} from './crud.js'
 import {findNextHabitIndex} from './crud.js'
 import {addNewHabitByIndex} from './crud.js'
-// const deleteHabitByIndex  = require('./crud.js')
-// const deleteHabitByIndex  = require('./crud.js')
+import {getItemInListIndex} from './utils.js'
 
-
+// var habitData = {
+//     0: {
+//         title: 'Porn',
+//         start: ['Thu Sep 08 2021 22:00:12 GMT+0200 (South Africa Standard Time)'],
+//     },
+//     1: {
+//         title: 'Masturbation',
+//         start: ['Thu Sep 08 2021 22:00:12 GMT+0200 (South Africa Standard Time)'],
+//     },
+//     2: {
+//         title: 'Exercise',
+//         start: ['Thu Aug 20 2021 22:00:12 GMT+0200 (South Africa Standard Time)'],
+//     },
+//     3: {
+//         title: 'Food binge',
+//         start: ['Thu Sep 10 2021 22:00:12 GMT+0200 (South Africa Standard Time)'],
+//     },
+//     4: {
+//         title: 'Study',
+//         start: ['Thu Sep 08 2021 22:00:12 GMT+0200 (South Africa Standard Time)'],
+//     },
+// }
+// updateHabitData(habitData)
 
 /*----------MAIN----------*/
 refreshHabitZone()
@@ -14,40 +35,7 @@ refreshHabitZone()
 setInterval(refreshTime, 1000)
 
 
-
-var habitData = {
-    0: {
-        title: 'Porn',
-        start: ['Thu Sep 08 2021 22:00:12 GMT+0200 (South Africa Standard Time)'],
-    },
-    1: {
-        title: 'Masturbation',
-        start: ['Thu Sep 08 2021 22:00:12 GMT+0200 (South Africa Standard Time)'],
-    },
-    2: {
-        title: 'Exercise',
-        start: ['Thu Aug 20 2021 22:00:12 GMT+0200 (South Africa Standard Time)'],
-    },
-    3: {
-        title: 'Food binge',
-        start: ['Thu Sep 10 2021 22:00:12 GMT+0200 (South Africa Standard Time)'],
-    },
-    4: {
-        title: 'Study',
-        start: ['Thu Sep 08 2021 22:00:12 GMT+0200 (South Africa Standard Time)'],
-    },
-}
-updateHabitData(habitData)
-
 /*----------UNTILS----------*/
-function getItemInListIndex(item, list) {
-    for (var i = 0; i < list.length; i++) {
-        if (item == list[i]) return(i)
-    }
-    return(-1)
-}
-
-/*----------FUNCTIONS----------*/
 function getHabitData() {
     var habitData = JSON.parse(localStorage.getItem("habitData"))
     if (habitData == null) return ({})
@@ -58,6 +46,7 @@ function updateHabitData(newHabitData) {
     localStorage.setItem("habitData", JSON.stringify(newHabitData));
 }
 
+/*----------FUNCTIONS----------*/
 function refreshHabitZone() {
     var habitZone = document.getElementsByClassName('habit-zone')[0];
     habitZone.innerHTML = '' // TODO: is this shoddy?
@@ -196,16 +185,14 @@ function undoDelete() {
 // TODO: technically this doesn't have to refresh the habit zone. Can just append the habit to the data and the zone
 function addNewHabit() {
     var habitData = getHabitData()
-    var newHabitName = document.getElementsByTagName('input')[0].value
-    var nuberHabits = 0
-    for (var key in habitData) {
-        if (habitData.hasOwnProperty(key)) nuberHabits++;
-    }
     var index = findNextHabitIndex(habitData)
+    
+    var newHabitName = document.getElementsByTagName('input')[0].value
     var habit = {
         title: newHabitName,
         start: [new Date()],
     }
+    
     addNewHabitByIndex(habitData, habit, index)
     updateHabitData(habitData)
     refreshHabitZone()
