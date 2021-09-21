@@ -46,9 +46,9 @@ function updateHabitData(newHabitData) {
     localStorage.setItem("habitData", JSON.stringify(newHabitData));
 }
 
-function calculateTime(d) {
+function calculateTimeDiff(date) {
     var today = new Date()
-    var diff = (today-d)/1000
+    var diff = (today-date)/1000
     var years = Math.floor(diff/(60*60*24*365))
     diff = diff - (60*60*24*365)*years
     var months = Math.floor(diff/(60*60*24*28))
@@ -60,19 +60,39 @@ function calculateTime(d) {
     var minutes = Math.floor(diff/(60))
     diff = diff - (60)*minutes
     var seconds = Math.floor(diff)
-    // console.log(`${years} years`)
-    // console.log(`${months} months`)
-    // console.log(`${days} days`)
-    // console.log(`${hours} hours`)
-    // console.log(`${minutes} minutes`)
-    // console.log(`${seconds} seconds`)
-    // return(`${years}:${months}:${days}:${hours}:${minutes}:${seconds}`)
-    // return(`${years} ${months} month ${days} days ${hours} hours ${minutes} minutes ${seconds} seconds`)
-    // return(`${hours}:${minutes}:${seconds}`)
-    return(`Y:M:D\n${years}:${months}:${days} - ${hours}:${minutes}:${seconds}`)
+    return([years, months, days, hours, minutes, seconds])
 }
 
 /*----------FUNCTIONS----------*/
+function generateTimeHtml(timeContainer) {
+    var timeContainer = document.createElement('div')
+    timeContainer.classList.add('time-container')
+    var timeNames = ['Year', 'Month', 'Day', 'Hour', 'Minute', 'Second']
+    for (var i = 0; i < 6; i++) {
+        var timeSubcontainer = document.createElement('div')
+        timeSubcontainer.classList.add('time-subcontainer')
+        var timeValue = document.createElement('div')
+        timeValue.classList.add('time-value')
+        timeValue.innerText = '00'
+        var timeName = document.createElement('div')
+        timeName.classList.add('time-name')
+        timeName.innerText = timeNames[i]
+
+        timeContainer.appendChild(timeSubcontainer)
+        timeSubcontainer.appendChild(timeValue)
+        timeSubcontainer.appendChild(timeName)
+    }
+    return(timeContainer)
+}
+
+function updateTimeHtml(timeContainer, date) {
+    var timeValues = timeContainer.getElementsByClassName('time-value')
+    var values = calculateTimeDiff(date)
+    for (var i = 0; i < 6; i++) {
+        timeValues[i].innerText = values[i]
+    }
+}
+
 function refreshHabitZone() {
     var habitZone = document.getElementsByClassName('habit-zone')[0];
     habitZone.innerHTML = '' // TODO: is this shoddy?
@@ -89,17 +109,14 @@ function refreshHabitZone() {
         var habitTitleSpan = document.createElement('span');
         habitTitleSpan.innerHTML = habitData[key]['title']
         
-        // count div
+        // time div
         var habitBody = document.createElement('div');
         habitBody.classList.add('habit-body')
-        var count = document.createElement('div')
-        count.classList.add('count')
-        var today = new Date()
         var startDays = habitData[key]['start']
-        var d = new Date(startDays[startDays.length-1])
-        // count.innerText = `${((today-d)/(1000*60*60*24)).toFixed(5)} days`
-        // calculateTime(d)
-        count.innerText = calculateTime(d)
+        var date = new Date(startDays[startDays.length-1])
+        var timeContainer = generateTimeHtml()
+        updateTimeHtml(timeContainer, date)
+        habitBody.appendChild(timeContainer)
 
         // reset button
         var habitReset = document.createElement('div')
@@ -127,18 +144,17 @@ function refreshHabitZone() {
         habitReset.appendChild(habitDeleteButton)
 
         // undo delete button
-        var habitUndoDeleteButton = document.createElement('button')
-        habitUndoDeleteButton.classList.add('undo-delete-button')
-        habitUndoDeleteButton.innerText = 'Undo Delete'
-        habitReset.appendChild(habitUndoDeleteButton)
-        // habitUndoDeleteButton.style.display = 'none'
-        habitUndoDeleteButton.addEventListener('click', undoDelete)
+        // var habitUndoDeleteButton = document.createElement('button')
+        // habitUndoDeleteButton.classList.add('undo-delete-button')
+        // habitUndoDeleteButton.innerText = 'Undo Delete'
+        // habitReset.appendChild(habitUndoDeleteButton)
+        // // habitUndoDeleteButton.style.display = 'none'
+        // habitUndoDeleteButton.addEventListener('click', undoDelete)
 
 
         // adppend all the childeren
         habitTitle.appendChild(habitTitleSpan)
         habit.appendChild(habitTitle)
-        habitBody.appendChild(count)
         habitBody.appendChild(habitReset)
         habit.appendChild(habitBody)
         habitZone.appendChild(habit)
@@ -165,34 +181,32 @@ function refreshHabitZone() {
 }
 
 function refreshTime() {
-    var countDivs = document.getElementsByClassName('count') 
-    let today = new Date()
     var habitData = getHabitData()
-    for (var i = 0; i < countDivs.length; i++) {
+    var timeContainers = document.getElementsByClassName('time-container')
+    for (var i = 0; i < timeContainers.length; i++) {
         var startDays = habitData[i]['start']
-        var d = new Date(startDays[startDays.length-1])
-        countDivs[i].innerText = calculateTime(d)//`${((today-d)/(1000*60*60*24)).toFixed(5)} days`
+        var date = new Date(startDays[startDays.length-1])
+        updateTimeHtml(timeContainers[i], date)
     }
 }
 
 function resetTime(event) {
-    var count = event.target.parentElement.parentElement.getElementsByClassName('count')[0]
-    var counts = document.getElementsByClassName('count')
     var habitData = getHabitData()
-    var index = getItemInListIndex(count,    counts)
+    var timeContainer = event.target.parentElement.parentElement.getElementsByClassName('time-container')[0]
+    var index = getItemInListIndex(timeContainer, document.getElementsByClassName('time-container'))
     habitData[index]['start'].push(new Date())
-    count.innerText = `0.00000 days`
+    updateTimeHtml(timeContainer, new Date())
     updateHabitData(habitData)
     
-    // display undoReset and hide reset
+    // display undoReset and hide reset // TODO: this should just toggle css tag
     var undo = document.getElementsByClassName('undo-reset-button')[index]
     undo.style.display = 'inline'
     var reset = document.getElementsByClassName('reset-button')[index]
     reset.style.display = 'none'
 }
 
-function undoReset(event) {
-    var undos = document.getElementsByClassName('undo-reset-button') // TODO: this will break if undos aren't visible with our implimentation
+function undoReset(event) { // TODO: a lot of this function should be handled with class toggles
+    var undos = document.getElementsByClassName('undo-reset-button')
     var index = getItemInListIndex(event.target, undos)
     var habitData = getHabitData()
     habitData[index]['start'].pop()
