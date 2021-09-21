@@ -31,6 +31,9 @@ import {dragAndDropReorder} from './utils.js'
 // }
 // updateHabitData(habitData)
 
+/*----------GLOBALS----------*/
+var lastMove = null;
+
 /*----------MAIN----------*/
 refreshHabitZone()
 
@@ -99,6 +102,38 @@ function setUpDragAndDrop() {
             }
             var start = getItemInListIndex(draggable, habits);
             var end = getItemInListIndex(over, habits);
+            var habitData = getHabitData()
+            dragAndDropReorder(habitData, start, end)
+            updateHabitData(habitData)
+            refreshHabitZone()
+        })
+
+        habits[i].addEventListener('touchstart', function(event){
+            event.target.classList.add('dragging')
+        })
+        habits[i].addEventListener('touchmove', function(event){
+            lastMove = event;
+        })
+        habits[i].addEventListener('touchend', function(event){
+            var over = event.target
+            while (over.classList[0] != 'habit') {
+                over = over.parentElement
+            }
+            var start = getItemInListIndex(over, habits);
+            event.target.classList.remove('dragging')
+            var endX = lastMove.touches[0].pageX
+            var endY = lastMove.touches[0].pageY
+
+            var end = -1
+            for (var i = 0; i < habits.length; i++) {
+                var testX0 = habits[i].offsetLeft
+                var testX1 = habits[i].offsetLeft + habits[i].offsetWidth
+                var testY0 = habits[i].offsetTop
+                var testY1 = habits[i].offsetTop + habits[i].offsetHeight
+                if (testX0 < endX && endX < testX1 && testY0 < endY && endY < testY1) {
+                    end = i
+                }
+            }
             var habitData = getHabitData()
             dragAndDropReorder(habitData, start, end)
             updateHabitData(habitData)
