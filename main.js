@@ -3,6 +3,7 @@ import {deleteHabitByIndex} from './crud.js'
 import {findNextHabitIndex} from './crud.js'
 import {addNewHabitByIndex} from './crud.js'
 import {getItemInListIndex} from './utils.js'
+import {calculateTimeDiffArray} from './utils.js'
 
 // var habitData = {
 //     0: {
@@ -46,23 +47,6 @@ function updateHabitData(newHabitData) {
     localStorage.setItem("habitData", JSON.stringify(newHabitData));
 }
 
-function calculateTimeDiff(date) {
-    var today = new Date()
-    var diff = (today-date)/1000
-    var years = Math.floor(diff/(60*60*24*365))
-    diff = diff - (60*60*24*365)*years
-    var months = Math.floor(diff/(60*60*24*28))
-    diff = diff - (60*60*24*28)*months
-    var days = Math.floor(diff/(60*60*24))
-    diff = diff - (60*60*24)*days
-    var hours = Math.floor(diff/(60*60))
-    diff = diff - (60*60)*hours
-    var minutes = Math.floor(diff/(60))
-    diff = diff - (60)*minutes
-    var seconds = Math.floor(diff)
-    return([years, months, days, hours, minutes, seconds])
-}
-
 /*----------FUNCTIONS----------*/
 function generateTimeHtml(timeContainer) {
     var timeContainer = document.createElement('div')
@@ -87,7 +71,7 @@ function generateTimeHtml(timeContainer) {
 
 function updateTimeHtml(timeContainer, date) {
     var timeValues = timeContainer.getElementsByClassName('time-value')
-    var values = calculateTimeDiff(date)
+    var values = calculateTimeDiffArray(date, new Date())
     for (var i = 0; i < 6; i++) {
         timeValues[i].innerText = values[i]
     }
