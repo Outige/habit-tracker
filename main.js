@@ -142,6 +142,87 @@ function setUpDragAndDrop() {
     }
 }
 
+function setUpBadgeDiv(habit) {
+    var badgeDiv = document.createElement('div')
+    badgeDiv.classList.add('badge-space')
+
+    // improvement
+    var n = habit['start'].length
+    if (n > 1) {
+        var a = new Date() - new Date(habit['start'][n-1])
+        var b = new Date(habit['start'][n-1]) - new Date(habit['start'][n-2])
+        if (a > b) {
+            var badge = document.createElement('div')
+            badge.classList.add('badge')
+            badge.classList.add('improvement')
+            var badgeText = document.createElement('span')
+            badgeText.classList.add('badge-text')
+            badgeText.innerText = 'improvement'
+
+
+            badge.appendChild(badgeText)
+            badgeDiv.appendChild(badge)
+        }
+    }
+
+    // best // TODO: this needs to be done better.
+    // var best = -1
+    // var index = -1
+    // for (var i = 1; i < n; i++) {
+    //     if (new Date() - new Date(habit['start'][i]) > best) {
+    //         best = new Date() - new Date(habit['start'][i])
+    //         index = i
+    //     }
+    // }
+    // if (index = n-1) {
+    //     var badge = document.createElement('div')
+    //     badge.classList.add('badge')
+    //     var badgeText = document.createElement('span')
+    //     badgeText.classList.add('badge-text')
+    //     badgeText.innerText = 'best'
+
+    //     console.log(badgeText)
+    //     badge.appendChild(badgeText)
+    //     badgeDiv.appendChild(badge)
+    // }
+
+    var time = calculateTimeDiffArray(new Date(habit['start'][n-1]), new Date())
+    if (time[0] > 0) {
+        var badge = document.createElement('div')
+        badge.classList.add('badge')
+        badge.classList.add('year')
+        var badgeText = document.createElement('span')
+        badgeText.classList.add('badge-text')
+        badgeText.innerText = `${time[0]}-year`
+
+        badge.appendChild(badgeText)
+        badgeDiv.appendChild(badge)
+    }
+    else if (time[1] > 0) {
+        var badge = document.createElement('div')
+        badge.classList.add('badge')
+        badge.classList.add('month')
+        var badgeText = document.createElement('span')
+        badgeText.classList.add('badge-text')
+        badgeText.innerText = `${time[1]}-month`
+
+        badge.appendChild(badgeText)
+        badgeDiv.appendChild(badge)
+    }
+    else if (time[2] > 7) {
+        var badge = document.createElement('div')
+        badge.classList.add('badge')
+        badge.classList.add('week')
+        var badgeText = document.createElement('span')
+        badgeText.classList.add('badge-text')
+        badgeText.innerText = `${Math.floor(time[2]/7)}-week`
+
+        badge.appendChild(badgeText)
+        badgeDiv.appendChild(badge)
+    }
+    return(badgeDiv)
+}
+
 function refreshHabitZone() {
     var habitZone = document.getElementsByClassName('habit-zone')[0];
     habitZone.innerHTML = '' // TODO: is this shoddy?
@@ -158,6 +239,36 @@ function refreshHabitZone() {
         
         var habitTitleSpan = document.createElement('span');
         habitTitleSpan.innerHTML = habitData[key]['title']
+        habitTitle.appendChild(habitTitleSpan)
+        habit.appendChild(habitTitle)
+        habit.appendChild(setUpBadgeDiv(habitData[key]))
+
+
+
+        // var badgeDiv = document.createElement('div')
+        // badgeDiv.classList.add('badge-space')
+        // var badge1 = document.createElement('div')
+        // badge1.classList.add('badge')
+        // var badgeText = document.createElement('span')
+        // badgeText.classList.add('badge-text')
+        // badgeText.innerText = 'best'
+        // badge1.appendChild(badgeText)
+        // var badge2 = document.createElement('div')
+        // badge2.classList.add('badge')
+        // badgeText = document.createElement('span')
+        // badgeText.classList.add('badge-text')
+        // badgeText.innerText = 'improvement'
+        // badge2.appendChild(badgeText)
+        // var badge3 = document.createElement('div')
+        // badge3.classList.add('badge')
+        // badgeText = document.createElement('span')
+        // badgeText.classList.add('badge-text')
+        // badgeText.innerText = '1 month'
+        // badge3.appendChild(badgeText)
+        // badgeDiv.appendChild(badge1)
+        // badgeDiv.appendChild(badge2)
+        // badgeDiv.appendChild(badge3)
+        // habit.appendChild(badgeDiv)
         
         // time div
         var habitBody = document.createElement('div');
@@ -203,8 +314,6 @@ function refreshHabitZone() {
 
 
         // adppend all the childeren
-        habitTitle.appendChild(habitTitleSpan)
-        habit.appendChild(habitTitle)
         habitBody.appendChild(habitReset)
         habit.appendChild(habitBody)
         habitZone.appendChild(habit)
