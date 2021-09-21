@@ -74,4 +74,10 @@ button {
         margin-right: 0.5rem;
         font-size: 1em;
     }
+
+    .habit, .new-habit {
+        /* background-color: red; */
+        width: 60%;
+        max-width: none;
+    }
 }
