@@ -4,6 +4,8 @@ import {findNextHabitIndex} from './crud.js'
 import {addNewHabitByIndex} from './crud.js'
 import {getItemInListIndex} from './utils.js'
 import {calculateTimeDiffArray} from './utils.js'
+import {dragAndDropReorder} from './utils.js'
+
 
 // var habitData = {
 //     0: {
@@ -77,6 +79,34 @@ function updateTimeHtml(timeContainer, date) {
     }
 }
 
+function setUpDragAndDrop() {
+    var habits = document.getElementsByClassName('habit')
+    for (var i = 0; i < habits.length; i++) {
+        habits[i].addEventListener('dragstart', (event) => {
+            event.target.classList.add('dragging')
+        })
+        habits[i].addEventListener('dragend', (event) => {
+            event.target.classList.remove('dragging')
+        })
+        habits[i].addEventListener('dragover', (event) => {
+            event.preventDefault()
+        })
+        habits[i].addEventListener('drop', (event) => {
+            const draggable = document.getElementsByClassName('dragging')[0]
+            var over = event.target
+            while (over.classList[0] != 'habit') {
+                over = over.parentElement
+            }
+            var start = getItemInListIndex(draggable, habits);
+            var end = getItemInListIndex(over, habits);
+            var habitData = getHabitData()
+            dragAndDropReorder(habitData, start, end)
+            updateHabitData(habitData)
+            refreshHabitZone()
+        })
+    }
+}
+
 function refreshHabitZone() {
     var habitZone = document.getElementsByClassName('habit-zone')[0];
     habitZone.innerHTML = '' // TODO: is this shoddy?
@@ -86,6 +116,7 @@ function refreshHabitZone() {
     for (var key in habitData) {
         var habit = document.createElement('div');
         habit.classList.add('habit');
+        habit.draggable = true
         
         var habitTitle = document.createElement('div');
         habitTitle.classList.add('habit-title')
@@ -162,6 +193,7 @@ function refreshHabitZone() {
     newHabit.appendChild(newHabitButton)
     habitZone.appendChild(newHabit)
     newHabitButton.addEventListener('click', addNewHabit)
+    setUpDragAndDrop()
 }
 
 function refreshTime() {

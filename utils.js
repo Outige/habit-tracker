@@ -23,3 +23,22 @@ export function calculateTimeDiffArray(date1, date2) {
     var seconds = Math.floor(diff)
     return([years, months, days, hours, minutes, seconds])
 }
+
+export function dragAndDropReorder(habitData, start, end) {
+    if (start < 0 || start >= Object.keys(habitData).length) throw RangeError('Invalid drag')
+    if (end < 0 || end >= Object.keys(habitData).length) throw RangeError('Invalid drag')
+    if (start == end) return;
+    else if (start < end) {
+        var tmp = habitData[start]
+        for (var i = start; i < end; i++) {
+            habitData[i] = habitData[i+1]
+        }
+        habitData[end] = tmp;
+    } else if (start > end) {
+        var tmp = habitData[start]
+        for (var i = start; i > end; i--) {
+            habitData[i] = habitData[i-1]
+        }
+        habitData[end] = tmp;
+    }
+}
