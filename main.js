@@ -115,15 +115,10 @@ function setUpDragAndDrop() {
             lastMove = event;
         })
         habits[i].addEventListener('touchend', function(event){
-            // var draggable = document.getElementsByClassName('dragging')[0]
-            // while (draggable.classList[0] != 'habit') {
-            //     draggable = draggable.parentElement
-            // }
             var over = event.target
             while (over.classList[0] != 'habit') {
                 over = over.parentElement
             }
-            // var start = getItemInListIndex(draggable, habits);
             var start = getItemInListIndex(over, habits);
             event.target.classList.remove('dragging')
             var endX = lastMove.touches[0].pageX
@@ -144,36 +139,6 @@ function setUpDragAndDrop() {
             updateHabitData(habitData)
             refreshHabitZone()
         })
-        // habits[i].addEventListener('touchcancel', function(event){
-        //     var draggable = document.getElementsByClassName('dragging')[0]
-        //     while (draggable.classList[0] != 'habit') {
-        //         draggable = draggable.parentElement
-        //     }
-        //     var over = event.target
-        //     while (over.classList[0] != 'habit') {
-        //         over = over.parentElement
-        //     }
-        //     var start = getItemInListIndex(draggable, habits);
-        //     var end = getItemInListIndex(over, habits);
-        //     console.log(start)
-        //     console.log(end)
-        //     event.target.classList.remove('dragging')
-        //     console.log(event.touches)
-        //     // var habitData = getHabitData()
-        //     // dragAndDropReorder(habitData, start, end)
-        //     // updateHabitData(habitData)
-        //     // refreshHabitZone()
-        // })
-
-        // habits[i].addEventListener('touchmove', function(){
-        //     console.log('btn moved');
-        // })
-        // habits[i].addEventListener('touchleave', function(){
-        //     console.log('btn moving end');
-        // })
-        // habits[i].addEventListener('touchcancel', function(){
-        //     console.log('btn moving cancel');
-        // })
     }
 }
 
