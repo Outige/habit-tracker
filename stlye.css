@@ -8,6 +8,41 @@ body {
     opacity: 0.5;
 }
 
+.badge-space {
+    background-color: black;
+    padding: 0.5rem 0;
+}
+
+.badge {
+    color: black;
+    display: inline;
+    background-color: red;
+    border-radius: 10px;
+    padding: 0.2rem;
+    margin-left: 0.2rem;
+}
+
+.improvement {
+    background-color: rgb(142, 150, 194);
+    color: black;
+}
+
+.year {
+    background-color: rgb(157, 255, 181);
+    color: rgb(8, 98, 23);
+    border: solid 2px rgb(179, 130, 26);
+}
+
+.month {
+    background-color: rgb(157, 255, 181);
+    color: rgb(8, 98, 23);
+}
+
+.week {
+    background-color: rgb(66, 135, 246);
+    color: rgb(10, 70, 167);
+}
+
 .time-container {
     display: flex;
     text-align: center;
