@@ -1,6 +1,23 @@
 body {
     margin: 0;
     padding: 0;
+    font-family: monospace;
+}
+
+.time-container {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.time-subcontainer {
+    margin-right: 0.5rem;
+    font-size: 1.2em;
+}
+
+.time-value {
+    font-weight: bold;
 }
 
 .habit-zone {

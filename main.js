@@ -46,6 +46,32 @@ function updateHabitData(newHabitData) {
     localStorage.setItem("habitData", JSON.stringify(newHabitData));
 }
 
+function calculateTime(d) {
+    var today = new Date()
+    var diff = (today-d)/1000
+    var years = Math.floor(diff/(60*60*24*365))
+    diff = diff - (60*60*24*365)*years
+    var months = Math.floor(diff/(60*60*24*28))
+    diff = diff - (60*60*24*28)*months
+    var days = Math.floor(diff/(60*60*24))
+    diff = diff - (60*60*24)*days
+    var hours = Math.floor(diff/(60*60))
+    diff = diff - (60*60)*hours
+    var minutes = Math.floor(diff/(60))
+    diff = diff - (60)*minutes
+    var seconds = Math.floor(diff)
+    // console.log(`${years} years`)
+    // console.log(`${months} months`)
+    // console.log(`${days} days`)
+    // console.log(`${hours} hours`)
+    // console.log(`${minutes} minutes`)
+    // console.log(`${seconds} seconds`)
+    // return(`${years}:${months}:${days}:${hours}:${minutes}:${seconds}`)
+    // return(`${years} ${months} month ${days} days ${hours} hours ${minutes} minutes ${seconds} seconds`)
+    // return(`${hours}:${minutes}:${seconds}`)
+    return(`Y:M:D\n${years}:${months}:${days} - ${hours}:${minutes}:${seconds}`)
+}
+
 /*----------FUNCTIONS----------*/
 function refreshHabitZone() {
     var habitZone = document.getElementsByClassName('habit-zone')[0];
@@ -71,8 +97,9 @@ function refreshHabitZone() {
         var today = new Date()
         var startDays = habitData[key]['start']
         var d = new Date(startDays[startDays.length-1])
-        count.innerText = `${((today-d)/(1000*60*60*24)).toFixed(5)} days`
-
+        // count.innerText = `${((today-d)/(1000*60*60*24)).toFixed(5)} days`
+        // calculateTime(d)
+        count.innerText = calculateTime(d)
 
         // reset button
         var habitReset = document.createElement('div')
@@ -144,7 +171,7 @@ function refreshTime() {
     for (var i = 0; i < countDivs.length; i++) {
         var startDays = habitData[i]['start']
         var d = new Date(startDays[startDays.length-1])
-        countDivs[i].innerText = `${((today-d)/(1000*60*60*24)).toFixed(5)} days`
+        countDivs[i].innerText = calculateTime(d)//`${((today-d)/(1000*60*60*24)).toFixed(5)} days`
     }
 }
 
