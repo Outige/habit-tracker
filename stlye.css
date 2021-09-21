@@ -4,6 +4,10 @@ body {
     font-family: monospace;
 }
 
+.dragging {
+    opacity: 0.5;
+}
+
 .time-container {
     display: flex;
     text-align: center;
@@ -34,6 +38,7 @@ body {
     margin: 0 auto;
     margin-top: 1rem;
     max-width: 20rem;
+    cursor: move;
 }
 
 .new-button {
