@@ -61,3 +61,17 @@ body {
 button {
     margin-right: 1rem;
 }
+
+@media only screen and (max-width: 800px) {
+    .habit-zone {
+        display: flex;
+        flex-direction: column;
+    
+        /* options */
+        flex-wrap: wrap;
+    }
+    .time-subcontainer {
+        margin-right: 0.5rem;
+        font-size: 1em;
+    }
+}
