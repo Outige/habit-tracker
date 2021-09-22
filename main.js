@@ -145,10 +145,79 @@ function setUpDragAndDrop() {
 function setUpBadgeDiv(habit) {
     var badgeDiv = document.createElement('div')
     badgeDiv.classList.add('badge-space')
+    var n = habit['start'].length
+    var flag = true
+
+    // day week month year badge
+    var time = calculateTimeDiffArray(new Date(habit['start'][n-1]), new Date())
+    if (time[0] > 0) {
+        var badge = document.createElement('div')
+        badge.classList.add('badge')
+        badge.classList.add('year')
+        var badgeText = document.createElement('span')
+        badgeText.classList.add('badge-text')
+        badgeText.innerText = `${time[0]}-year`
+
+        badge.appendChild(badgeText)
+        badgeDiv.appendChild(badge)
+        flag = false
+    }
+    else if (time[1] > 0) {
+        var badge = document.createElement('div')
+        badge.classList.add('badge')
+        badge.classList.add('month')
+        var badgeText = document.createElement('span')
+        badgeText.classList.add('badge-text')
+        badgeText.innerText = `${time[1]}-month`
+
+        badge.appendChild(badgeText)
+        badgeDiv.appendChild(badge)
+        flag = false
+    }
+    else if (time[2] >= 7) {
+        var badge = document.createElement('div')
+        badge.classList.add('badge')
+        badge.classList.add('week')
+        var badgeText = document.createElement('span')
+        badgeText.classList.add('badge-text')
+        badgeText.innerText = `${Math.floor(time[2]/7)}-week`
+
+        badge.appendChild(badgeText)
+        badgeDiv.appendChild(badge)
+        flag = false
+    } else if (time[2] < 7 && time[2] > 0) {
+        var badge = document.createElement('div')
+        badge.classList.add('badge')
+        badge.classList.add('day')
+        var badgeText = document.createElement('span')
+        badgeText.classList.add('badge-text')
+        badgeText.innerText = `${time[2]}-day`
+
+        badge.appendChild(badgeText)
+        badgeDiv.appendChild(badge)
+    }
+    // best
+    var best = null
+    for (var i = 1; i < n; i++) {
+        best = Math.max(best, new Date(habit['start'][i]) - new Date(habit['start'][i-1]))
+    }
+    var c = new Date() - new Date(habit['start'][n-1])
+    if (c > best) {
+        var badge = document.createElement('div')
+        badge.classList.add('badge')
+        badge.classList.add('best')
+        var badgeText = document.createElement('span')
+        badgeText.classList.add('badge-text')
+        badgeText.innerText = 'best'
+
+
+        badge.appendChild(badgeText)
+        badgeDiv.appendChild(badge)
+        flag = false
+    }
 
     // improvement
-    var n = habit['start'].length
-    if (n > 1) {
+    if (n > 1 && flag) {
         var a = new Date() - new Date(habit['start'][n-1])
         var b = new Date(habit['start'][n-1]) - new Date(habit['start'][n-2])
         if (a > b) {
@@ -163,62 +232,6 @@ function setUpBadgeDiv(habit) {
             badge.appendChild(badgeText)
             badgeDiv.appendChild(badge)
         }
-    }
-
-    // best // TODO: this needs to be done better.
-    // var best = -1
-    // var index = -1
-    // for (var i = 1; i < n; i++) {
-    //     if (new Date() - new Date(habit['start'][i]) > best) {
-    //         best = new Date() - new Date(habit['start'][i])
-    //         index = i
-    //     }
-    // }
-    // if (index = n-1) {
-    //     var badge = document.createElement('div')
-    //     badge.classList.add('badge')
-    //     var badgeText = document.createElement('span')
-    //     badgeText.classList.add('badge-text')
-    //     badgeText.innerText = 'best'
-
-    //     console.log(badgeText)
-    //     badge.appendChild(badgeText)
-    //     badgeDiv.appendChild(badge)
-    // }
-
-    var time = calculateTimeDiffArray(new Date(habit['start'][n-1]), new Date())
-    if (time[0] > 0) {
-        var badge = document.createElement('div')
-        badge.classList.add('badge')
-        badge.classList.add('year')
-        var badgeText = document.createElement('span')
-        badgeText.classList.add('badge-text')
-        badgeText.innerText = `${time[0]}-year`
-
-        badge.appendChild(badgeText)
-        badgeDiv.appendChild(badge)
-    }
-    else if (time[1] > 0) {
-        var badge = document.createElement('div')
-        badge.classList.add('badge')
-        badge.classList.add('month')
-        var badgeText = document.createElement('span')
-        badgeText.classList.add('badge-text')
-        badgeText.innerText = `${time[1]}-month`
-
-        badge.appendChild(badgeText)
-        badgeDiv.appendChild(badge)
-    }
-    else if (time[2] > 7) {
-        var badge = document.createElement('div')
-        badge.classList.add('badge')
-        badge.classList.add('week')
-        var badgeText = document.createElement('span')
-        badgeText.classList.add('badge-text')
-        badgeText.innerText = `${Math.floor(time[2]/7)}-week`
-
-        badge.appendChild(badgeText)
-        badgeDiv.appendChild(badge)
     }
     return(badgeDiv)
 }
