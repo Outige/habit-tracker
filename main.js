@@ -337,10 +337,11 @@ function refreshHabitZone() {
     newHabit.classList.add('new-habit')
     var newHabitName = document.createElement('input')
     newHabitName.type = "text"
-    newHabitName.value = "(enter habit name)"
-    newHabitName.addEventListener('focus', function(event) {
-        event.target.value = ''
-    })
+    // newHabitName.value = "(enter habit name)"
+    newHabitName.placeholder = "(enter habit name)"
+    // newHabitName.addEventListener('focus', function(event) {
+    //     event.target.value = ''
+    // })
     var newHabitButton = document.createElement('button')
     newHabitButton.classList.add('new-button')
     newHabitButton.innerText = "New Habit"
@@ -402,6 +403,15 @@ function addNewHabit() {
     var index = findNextHabitIndex(habitData)
     
     var newHabitName = document.getElementsByTagName('input')[0].value
+    newHabitName = newHabitName.trim()
+    if (newHabitName == '') {
+        alert('empty name')
+        return
+    }
+    if (newHabitName.length > 20) {
+        alert('name too long')
+        return
+    }
     var habit = {
         title: newHabitName,
         start: [new Date()],
