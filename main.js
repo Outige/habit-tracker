@@ -236,6 +236,137 @@ function setUpBadgeDiv(habit) {
     return(badgeDiv)
 }
 
+function loadSummary(event) {
+    // var summaryButtons = document.getElementsByClassName('summary-button')
+    // var index = getItemInListIndex(event.target, summaryButtons)
+    // var habitZone = document.getElementsByClassName('habit-zone')[0]
+    // habitZone.innerHTML = ''
+    // var body = document.getElementsByTagName('body')[0]
+
+    // var summaryZone = document.createElement('div')
+    // summaryZone.classList.add('summary-zone')
+    // var habitData = getHabitData()
+    // var startDays = habitData[index]['start']
+    // console.log(startDays)
+    // for (var i = startDays.length; i > 0; i--) {
+    //     var summaryRow = document.createElement('div')
+    //     summaryRow.classList.add('summary-row')
+    //     var summaryDates = document.createElement('div')
+    //     summaryDates.classList.add('summary-dates')
+    //     if (i == startDays.length) {
+    //         summaryDates.innerText = new Date(startDays[i-1]).toISOString().split('T')[0] + ' => ' + 'current'
+    //     } else {
+    //         summaryDates.innerText = new Date(startDays[i-1]).toISOString().split('T')[0] + ' => ' + new Date(startDays[i]).toISOString().split('T')[0]
+    //     }
+    //     var summaryTime = document.createElement('div')
+    //     summaryTime.classList.add('summary-time')
+    //     summaryTime.innerText = i
+    //     var summaryBadges = document.createElement('div')
+    //     summaryBadges.classList.add('summary-badges')
+    //     summaryBadges.innerText = i+50
+
+    //     summaryRow.appendChild(summaryDates)
+    //     summaryRow.appendChild(summaryTime)
+    //     summaryRow.appendChild(summaryBadges)
+    //     summaryZone.appendChild(summaryRow)
+    // }
+    // body.appendChild(summaryZone)
+    // swapStyleSheet("tmp.css")
+    // styleSheet = document.getElementById("pagestyle");
+    // styleSheet.setAttribute("href", "tmp.css");
+
+    
+
+    var summaryButtons = document.getElementsByClassName('summary-button')
+    var index = getItemInListIndex(event.target, summaryButtons)
+    var habitZone = document.getElementsByClassName('habit-zone')[0]
+    habitZone.innerHTML = ''
+    var body = document.getElementsByTagName('body')[0]
+
+    var summaryZone = document.createElement('div')
+    summaryZone.classList.add('summary-zone')
+    var heading = document.createElement('div')
+    heading.classList.add('heading')
+    summaryZone.appendChild(heading)
+    var headings = ['Date', 'Time', 'Badges']
+    for (var i = 0; i < headings.length; i++) {
+        var column = document.createElement('div')
+        // column.innerText = headings[i].toLocaleLowerCase()
+        column.innerText = headings[i]
+        column.classList.add('column')
+        heading.appendChild(column)
+    }
+//     <div class="heading">
+//     <div class="column">Date</div>
+//     <div class="column">Time</div>
+//     <div class="column">Badges</div>
+// </div>
+
+
+    var habitData = getHabitData()
+    var startDays = habitData[index]['start']
+    // // console.log(startDays)
+    for (var i = startDays.length; i > 0; i--) {
+        // date
+        var row = document.createElement('div')
+        row.classList.add('row')
+        var column = document.createElement('div')
+        column.classList.add('column')
+        column.classList.add('date')
+        if (i == startDays.length) {
+            column.innerText = new Date(startDays[i-1]).toISOString().split('T')[0] + ' - ' + 'current'
+        } else {
+            column.innerText = new Date(startDays[i-1]).toISOString().split('T')[0] + ' - ' + new Date(startDays[i]).toISOString().split('T')[0]
+        }
+        row.appendChild(column)
+
+        // time
+        var column = document.createElement('div')
+        column.classList.add('column')
+        column.innerText = 'a'
+        row.appendChild(column)
+
+
+        // badges
+        var column = document.createElement('div')
+        column.classList.add('column')
+        column.innerText = 'b'
+        row.appendChild(column)
+        summaryZone.appendChild(row)
+
+
+
+
+
+
+
+    //     var summaryRow = document.createElement('div')
+    //     summaryRow.classList.add('summary-row')
+    //     var summaryDates = document.createElement('div')
+    //     summaryDates.classList.add('summary-dates')
+    //     if (i == startDays.length) {
+    //         summaryDates.innerText = new Date(startDays[i-1]).toISOString().split('T')[0] + ' => ' + 'current'
+    //     } else {
+    //         summaryDates.innerText = new Date(startDays[i-1]).toISOString().split('T')[0] + ' => ' + new Date(startDays[i]).toISOString().split('T')[0]
+    //     }
+    //     var summaryTime = document.createElement('div')
+    //     summaryTime.classList.add('summary-time')
+    //     summaryTime.innerText = i
+    //     var summaryBadges = document.createElement('div')
+    //     summaryBadges.classList.add('summary-badges')
+    //     summaryBadges.innerText = i+50
+
+    //     summaryRow.appendChild(summaryDates)
+    //     summaryRow.appendChild(summaryTime)
+    //     summaryRow.appendChild(summaryBadges)
+    //     summaryZone.appendChild(summaryRow)
+    }
+    body.appendChild(summaryZone)
+    // swapStyleSheet("tmp.css")
+    var styleSheet = document.getElementById("pagestyle");
+    styleSheet.setAttribute("href", "tmp.css");
+}
+
 function refreshHabitZone() {
     var habitZone = document.getElementsByClassName('habit-zone')[0];
     habitZone.innerHTML = '' // TODO: is this shoddy?
@@ -316,6 +447,13 @@ function refreshHabitZone() {
         habitDeleteButton.innerText = 'Delete'
         habitDeleteButton.addEventListener('click', deleteHabit)
         habitReset.appendChild(habitDeleteButton)
+
+        // summary button
+        var summaryButton = document.createElement('button')
+        summaryButton.classList.add('summary-button')
+        summaryButton.innerText = 'Summary'
+        summaryButton.addEventListener('click', loadSummary)
+        habitReset.appendChild(summaryButton)
 
         // undo delete button
         // var habitUndoDeleteButton = document.createElement('button')
