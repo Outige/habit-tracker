@@ -42,3 +42,47 @@ export function dragAndDropReorder(habitData, start, end) {
         habitData[end] = tmp;
     }
 }
+
+export function getHabitBadges(habit) {
+    var n = habit['start'].length
+    var flag = true
+    var badges = []
+
+    // day week month year badge
+    var time = calculateTimeDiffArray(new Date(habit['start'][n-1]), new Date())
+    if (time[0] > 0) {
+        badges.push({'class':'year', 'text':`${time[0]}-year`})
+        flag = false
+    }
+    else if (time[1] > 0) {
+        badges.push({'class':'month', 'text':`${time[1]}-month`})
+        flag = false
+    }
+    else if (time[2] >= 7) {
+        badges.push({'class':'week', 'text':`${Math.floor(time[2]/7)}-week`})
+        flag = false
+    } else if (time[2] < 7 && time[2] > 0) {
+        badges.push({'class':'day', 'text':`${time[2]}-day`})
+    }
+    
+    // best
+    var best = null
+    for (var i = 1; i < n; i++) {
+        best = Math.max(best, new Date(habit['start'][i]) - new Date(habit['start'][i-1]))
+    }
+    var c = new Date() - new Date(habit['start'][n-1])
+    if (c > best) {
+        badges.push({'class':'best', 'text':'best'})
+        flag = false
+    }
+
+    // improvement
+    if (n > 1 && flag) {
+        var a = new Date() - new Date(habit['start'][n-1])
+        var b = new Date(habit['start'][n-1]) - new Date(habit['start'][n-2])
+        if (a > b) {
+            badges.push({'class':'improvement', 'text':'improvement'})
+        }
+    }
+    return(badges)
+}

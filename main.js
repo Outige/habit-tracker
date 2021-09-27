@@ -5,6 +5,7 @@ import {addNewHabitByIndex} from './crud.js'
 import {getItemInListIndex} from './utils.js'
 import {calculateTimeDiffArray} from './utils.js'
 import {dragAndDropReorder} from './utils.js'
+import {getHabitBadges} from './utils.js'
 
 
 // var habitData = {
@@ -237,46 +238,6 @@ function setUpBadgeDiv(habit) {
 }
 
 function loadSummary(event) {
-    // var summaryButtons = document.getElementsByClassName('summary-button')
-    // var index = getItemInListIndex(event.target, summaryButtons)
-    // var habitZone = document.getElementsByClassName('habit-zone')[0]
-    // habitZone.innerHTML = ''
-    // var body = document.getElementsByTagName('body')[0]
-
-    // var summaryZone = document.createElement('div')
-    // summaryZone.classList.add('summary-zone')
-    // var habitData = getHabitData()
-    // var startDays = habitData[index]['start']
-    // console.log(startDays)
-    // for (var i = startDays.length; i > 0; i--) {
-    //     var summaryRow = document.createElement('div')
-    //     summaryRow.classList.add('summary-row')
-    //     var summaryDates = document.createElement('div')
-    //     summaryDates.classList.add('summary-dates')
-    //     if (i == startDays.length) {
-    //         summaryDates.innerText = new Date(startDays[i-1]).toISOString().split('T')[0] + ' => ' + 'current'
-    //     } else {
-    //         summaryDates.innerText = new Date(startDays[i-1]).toISOString().split('T')[0] + ' => ' + new Date(startDays[i]).toISOString().split('T')[0]
-    //     }
-    //     var summaryTime = document.createElement('div')
-    //     summaryTime.classList.add('summary-time')
-    //     summaryTime.innerText = i
-    //     var summaryBadges = document.createElement('div')
-    //     summaryBadges.classList.add('summary-badges')
-    //     summaryBadges.innerText = i+50
-
-    //     summaryRow.appendChild(summaryDates)
-    //     summaryRow.appendChild(summaryTime)
-    //     summaryRow.appendChild(summaryBadges)
-    //     summaryZone.appendChild(summaryRow)
-    // }
-    // body.appendChild(summaryZone)
-    // swapStyleSheet("tmp.css")
-    // styleSheet = document.getElementById("pagestyle");
-    // styleSheet.setAttribute("href", "tmp.css");
-
-    
-
     var summaryButtons = document.getElementsByClassName('summary-button')
     var index = getItemInListIndex(event.target, summaryButtons)
     var habitZone = document.getElementsByClassName('habit-zone')[0]
@@ -291,21 +252,14 @@ function loadSummary(event) {
     var headings = ['Date', 'Time', 'Badges']
     for (var i = 0; i < headings.length; i++) {
         var column = document.createElement('div')
-        // column.innerText = headings[i].toLocaleLowerCase()
         column.innerText = headings[i]
         column.classList.add('column')
         heading.appendChild(column)
     }
-//     <div class="heading">
-//     <div class="column">Date</div>
-//     <div class="column">Time</div>
-//     <div class="column">Badges</div>
-// </div>
 
 
     var habitData = getHabitData()
     var startDays = habitData[index]['start']
-    // // console.log(startDays)
     for (var i = startDays.length; i > 0; i--) {
         // date
         var row = document.createElement('div')
@@ -354,76 +308,41 @@ function loadSummary(event) {
         </div>
     </div>`
 
-        // var timeContainer = document.createElement('div')
-        // timeContainer.classList.add('time-container')
-        // var timeSubcontainer = document.createElement('div')
-        // timeSubcontainer.classList.add('time-subcontainer')
-
-    //     <div class="column time">
-    //     <div class="time-container">
-    //         <div class="time-subcontainer">
-    //             <div class="time-value">00</div>
-    //             <div class="time-name">Y</div>
-    //         </div>
-    //         <div class="time-subcontainer">
-    //             <div class="time-value">00</div>
-    //             <div class="time-name">M</div>
-    //         </div>
-    //         <div class="time-subcontainer">
-    //             <div class="time-value">15</div>
-    //             <div class="time-name">D</div>
-    //         </div>
-    //         <div class="time-subcontainer">
-    //             <div class="time-value">20</div>
-    //             <div class="time-name">H</div>
-    //         </div>
-    //         <div class="time-subcontainer">
-    //             <div class="time-value">46</div>
-    //             <div class="time-name">M</div>
-    //         </div>
-    //         <div class="time-subcontainer">
-    //             <div class="time-value">37</div>
-    //             <div class="time-name">S</div>
-    //         </div>
-    //     </div>
-    // </div>
-        // column.innerText = 'a'
         row.appendChild(column)
 
 
         // badges
+    //     <div class="column badges">
+    //     <div class="badge-zone">
+    //         <div class="badge"><span class="badge-text week">week-4</span></div>
+    //     </div>
+    // </div>
         var column = document.createElement('div')
         column.classList.add('column')
-        column.innerText = 'b'
+        column.classList.add('badges')
+        // column.innerText = 'b'
+        // column.innerText = getHabitBadges(habitData[index]).toString()
+        var badgeZone = document.createElement('div')
+        badgeZone.classList.add('badge-zone')
+
+        var badges = getHabitBadges(habitData[index])
+        console.log(badges)
+        console.log(badges.length)
+        for (var j = 0; j < badges.length; j++) {
+            var badge = document.createElement('div')
+            badge.classList.add('badge')
+            var badgeText = document.createElement('span')
+            badgeText.classList.add('badge-text')
+            badgeText.classList.add(badges[j]['class'])
+            badgeText.innerText = badges[j]['text']
+
+            badge.appendChild(badgeText)
+            badgeZone.appendChild(badge)
+        }
+
+        column.appendChild(badgeZone)
         row.appendChild(column)
         summaryZone.appendChild(row)
-
-
-
-
-
-
-
-    //     var summaryRow = document.createElement('div')
-    //     summaryRow.classList.add('summary-row')
-    //     var summaryDates = document.createElement('div')
-    //     summaryDates.classList.add('summary-dates')
-    //     if (i == startDays.length) {
-    //         summaryDates.innerText = new Date(startDays[i-1]).toISOString().split('T')[0] + ' => ' + 'current'
-    //     } else {
-    //         summaryDates.innerText = new Date(startDays[i-1]).toISOString().split('T')[0] + ' => ' + new Date(startDays[i]).toISOString().split('T')[0]
-    //     }
-    //     var summaryTime = document.createElement('div')
-    //     summaryTime.classList.add('summary-time')
-    //     summaryTime.innerText = i
-    //     var summaryBadges = document.createElement('div')
-    //     summaryBadges.classList.add('summary-badges')
-    //     summaryBadges.innerText = i+50
-
-    //     summaryRow.appendChild(summaryDates)
-    //     summaryRow.appendChild(summaryTime)
-    //     summaryRow.appendChild(summaryBadges)
-    //     summaryZone.appendChild(summaryRow)
     }
     body.appendChild(summaryZone)
     // swapStyleSheet("tmp.css")
