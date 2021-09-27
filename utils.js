@@ -43,46 +43,53 @@ export function dragAndDropReorder(habitData, start, end) {
     }
 }
 
-export function getHabitBadges(habit) {
-    var n = habit['start'].length
-    var flag = true
-    var badges = []
-
-    // day week month year badge
-    var time = calculateTimeDiffArray(new Date(habit['start'][n-1]), new Date())
-    if (time[0] > 0) {
-        badges.push({'class':'year', 'text':`${time[0]}-year`})
-        flag = false
+export function getHabitBadges(starts, index, today=new Date()) {
+    /* exceptions */
+    if (typeof(starts) != typeof([])) throw new TypeError('$starts must be an array')
+    if (starts.length < 1) throw new RangeError('$starts can\'t be empty')
+    for (var i = 1; i < starts.length; i++) {
+        if (new Date(starts[i])-new Date(starts[i-1]) < 0) throw new RangeError('$starts must be in ascending order')
     }
-    else if (time[1] > 0) {
-        badges.push({'class':'month', 'text':`${time[1]}-month`})
-        flag = false
-    }
-    else if (time[2] >= 7) {
-        badges.push({'class':'week', 'text':`${Math.floor(time[2]/7)}-week`})
-        flag = false
-    } else if (time[2] < 7 && time[2] > 0) {
-        badges.push({'class':'day', 'text':`${time[2]}-day`})
-    }
+    if (typeof(today) != typeof(new Date())) throw new TypeError('$today must be a date')
+    if (today-new Date(starts.length-1) < 0) throw new RangeError('$today must be the largest day')
+    if (index < 0 || index >= starts.length) throw new RangeError('$index not in starts')
     
-    // best
-    var best = null
-    for (var i = 1; i < n; i++) {
-        best = Math.max(best, new Date(habit['start'][i]) - new Date(habit['start'][i-1]))
-    }
-    var c = new Date() - new Date(habit['start'][n-1])
-    if (c > best) {
-        badges.push({'class':'best', 'text':'best'})
-        flag = false
+    /* vars */
+    var badges = []
+    var n = starts.length
+    var best = 0
+    var better = true
+    starts = [...starts]
+    starts.push(today)
+
+    /* year */
+    var times = calculateTimeDiffArray(new Date(starts[index]), new Date(starts[index+1]))
+    if (times[0] > 0) {
+        badges.push({'class':'year', 'text':`${times[0]}-year`})
+        better = false
+    } else if (times[1] > 0) {
+        badges.push({'class':'month', 'text':`${times[1]}-month`})
+        better = false
+    } else if (Math.floor(times[2]/7) > 0) {
+        badges.push({'class':'week', 'text':`${Math.floor(times[2]/7)}-week`})
+        better = false
+    } else if (times[2] > 0) {
+        badges.push({'class':'day', 'text':`${times[2]}-day`})
     }
 
-    // improvement
-    if (n > 1 && flag) {
-        var a = new Date() - new Date(habit['start'][n-1])
-        var b = new Date(habit['start'][n-1]) - new Date(habit['start'][n-2])
-        if (a > b) {
-            badges.push({'class':'improvement', 'text':'improvement'})
-        }
+    /* best badge */
+    for (var i = 0; i < starts.length-1; i++) {
+        best = Math.max(best, new Date(starts[i+1]) - new Date(starts[i]))
     }
+    if (new Date(starts[index+1])-new Date(starts[index]) >= best) {
+        badges.push({'class':'best', 'text':'best'})
+        better = false
+    }
+
+    /* better badge */
+    if (better && index > 0 && new Date(starts[index+1])-new Date(starts[index]) >= new Date(starts[index])-new Date(starts[index-1])) {
+        badges.push({'class':'better', 'text':'better'})
+    }
+
     return(badges)
 }

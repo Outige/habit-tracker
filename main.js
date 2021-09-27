@@ -325,9 +325,8 @@ function loadSummary(event) {
         var badgeZone = document.createElement('div')
         badgeZone.classList.add('badge-zone')
 
-        var badges = getHabitBadges(habitData[index])
-        console.log(badges)
-        console.log(badges.length)
+        // TODO: 1) need current with updates 2) busted
+        var badges = getHabitBadges(habitData[index]['start'], i)
         for (var j = 0; j < badges.length; j++) {
             var badge = document.createElement('div')
             badge.classList.add('badge')
