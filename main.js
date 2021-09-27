@@ -315,15 +315,79 @@ function loadSummary(event) {
         column.classList.add('date')
         if (i == startDays.length) {
             column.innerText = new Date(startDays[i-1]).toISOString().split('T')[0] + ' - ' + 'current'
+            row.appendChild(column)
+            continue
         } else {
             column.innerText = new Date(startDays[i-1]).toISOString().split('T')[0] + ' - ' + new Date(startDays[i]).toISOString().split('T')[0]
+            row.appendChild(column)
         }
-        row.appendChild(column)
 
         // time
         var column = document.createElement('div')
         column.classList.add('column')
-        column.innerText = 'a'
+        column.classList.add('time')
+        var times = calculateTimeDiffArray(new Date(startDays[i-1]), new Date(startDays[i]))
+        column.innerHTML = `<div class="time-container-summary">
+        <div class="time-subcontainer-summary">
+            <div class="time-value">${times[0]}</div>
+            <div class="time-name">Y</div>
+        </div>
+        <div class="time-subcontainer-summary">
+            <div class="time-value">${times[1]}</div>
+            <div class="time-name">M</div>
+        </div>
+        <div class="time-subcontainer-summary">
+            <div class="time-value">${times[2]}</div>
+            <div class="time-name">D</div>
+        </div>
+        <div class="time-subcontainer-summary">
+            <div class="time-value">${times[3]}</div>
+            <div class="time-name">H</div>
+        </div>
+        <div class="time-subcontainer-summary">
+            <div class="time-value">${times[4]}</div>
+            <div class="time-name">M</div>
+        </div>
+        <div class="time-subcontainer-summary">
+            <div class="time-value">${times[5]}</div>
+            <div class="time-name">S</div>
+        </div>
+    </div>`
+
+        // var timeContainer = document.createElement('div')
+        // timeContainer.classList.add('time-container')
+        // var timeSubcontainer = document.createElement('div')
+        // timeSubcontainer.classList.add('time-subcontainer')
+
+    //     <div class="column time">
+    //     <div class="time-container">
+    //         <div class="time-subcontainer">
+    //             <div class="time-value">00</div>
+    //             <div class="time-name">Y</div>
+    //         </div>
+    //         <div class="time-subcontainer">
+    //             <div class="time-value">00</div>
+    //             <div class="time-name">M</div>
+    //         </div>
+    //         <div class="time-subcontainer">
+    //             <div class="time-value">15</div>
+    //             <div class="time-name">D</div>
+    //         </div>
+    //         <div class="time-subcontainer">
+    //             <div class="time-value">20</div>
+    //             <div class="time-name">H</div>
+    //         </div>
+    //         <div class="time-subcontainer">
+    //             <div class="time-value">46</div>
+    //             <div class="time-name">M</div>
+    //         </div>
+    //         <div class="time-subcontainer">
+    //             <div class="time-value">37</div>
+    //             <div class="time-name">S</div>
+    //         </div>
+    //     </div>
+    // </div>
+        // column.innerText = 'a'
         row.appendChild(column)
 
 

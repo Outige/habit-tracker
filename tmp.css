@@ -3,7 +3,7 @@
     padding: 0;
 }
 
-.row, .time-container, .heading {
+.row, .time-container-summary, .heading {
     display: flex;
     /* color: red; */
     flex-direction: row;
@@ -24,7 +24,7 @@
     background-color: rgb(221, 221, 221);
 }
 
-.column, .time-subcontainer {
+.column, .time-subcontainer-summary {
     /* color: greenyellow; */
     /* display: block; */
     width: 100%;
