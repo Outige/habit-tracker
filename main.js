@@ -257,30 +257,48 @@ function loadSummary(event) {
         heading.appendChild(column)
     }
 
-
     var habitData = getHabitData()
     var startDays = habitData[index]['start']
-    for (var i = startDays.length; i > 0; i--) {
-        // date
+
+    for (var i = startDays.length-1; i >= 0; i--) {
+        /* date */
+        var foo = [
+        "2021-09-08T22:00:00.406Z", // 08-11 | 3 days
+        "2021-09-11T22:00:00.406Z", // 11-13 | 2 days
+        "2021-09-13T22:00:00.406Z", // 13-14 | 1 days
+        "2021-09-14T22:00:00.406Z", // 14-18 | 4 day
+        "2021-09-18T22:00:00.604Z", // 18-19 | 1 days
+        "2021-09-19T22:00:00.604Z", // 19-20 | 1 day
+        "2021-09-20T22:00:00.604Z", // 20-21 | 1 day
+        "2021-09-21T22:00:00.604Z", // 21-22 | 1 day
+        "2021-09-22T22:00:00.604Z", // 22-23 | 1 day
+        "2021-09-23T22:00:00.604Z", // 23-24 | 1 day
+        "2021-09-24T22:00:00.604Z", // 24-25 | 1 day
+        "2021-09-25T22:00:00.604Z", // 25-26 | 1 day
+        "2021-09-26T22:00:00.604Z"  // 26-cu | 1.5 day
+        ]
         var row = document.createElement('div')
         row.classList.add('row')
         var column = document.createElement('div')
         column.classList.add('column')
         column.classList.add('date')
-        if (i == startDays.length) {
-            column.innerText = new Date(startDays[i-1]).toISOString().split('T')[0] + ' - ' + 'current'
+        if (i == startDays.length-1) {
+            column.innerText = new Date(startDays[i]).toISOString().split('T')[0] + ' - ' + 'current'
             row.appendChild(column)
-            continue
         } else {
-            column.innerText = new Date(startDays[i-1]).toISOString().split('T')[0] + ' - ' + new Date(startDays[i]).toISOString().split('T')[0]
+            column.innerText = new Date(startDays[i]).toISOString().split('T')[0] + ' - ' + new Date(startDays[i+1]).toISOString().split('T')[0]
             row.appendChild(column)
         }
 
-        // time
+        /* time */
         var column = document.createElement('div')
         column.classList.add('column')
         column.classList.add('time')
-        var times = calculateTimeDiffArray(new Date(startDays[i-1]), new Date(startDays[i]))
+        if (i == startDays.length -1) {
+            var times = calculateTimeDiffArray(new Date(startDays[i]), new Date())
+        } else {
+            var times = calculateTimeDiffArray(new Date(startDays[i]), new Date(startDays[i+1]))
+        }
         column.innerHTML = `<div class="time-container-summary">
         <div class="time-subcontainer-summary">
             <div class="time-value">${times[0]}</div>
@@ -310,13 +328,7 @@ function loadSummary(event) {
 
         row.appendChild(column)
 
-
-        // badges
-    //     <div class="column badges">
-    //     <div class="badge-zone">
-    //         <div class="badge"><span class="badge-text week">week-4</span></div>
-    //     </div>
-    // </div>
+        /* badges */
         var column = document.createElement('div')
         column.classList.add('column')
         column.classList.add('badges')

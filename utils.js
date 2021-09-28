@@ -87,7 +87,7 @@ export function getHabitBadges(starts, index, today=new Date()) {
     }
 
     /* better badge */
-    if (better && index > 0 && new Date(starts[index+1])-new Date(starts[index]) >= new Date(starts[index])-new Date(starts[index-1])) {
+    if (better && index > 0 && new Date(starts[index+1])-new Date(starts[index]) > new Date(starts[index])-new Date(starts[index-1])) {
         badges.push({'class':'better', 'text':'better'})
     }
 
