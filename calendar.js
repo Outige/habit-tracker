@@ -1,3 +1,5 @@
+import {getCalendarData} from './utils.js'
+
 var dates = [
     "2020-08-12T06:45:15.924Z",
 
@@ -71,7 +73,9 @@ function bar(dates, today=new Date()) {
     return(foo)
 }
 
-var calendarData = bar(dates, new Date())
+var dates = ["2000-01-05T18:19:21.111Z","2000-01-06T18:19:21.111Z","2000-01-15T18:19:21.111Z","2000-01-20T18:19:21.111Z","2000-01-22T18:19:21.111Z"]
+var today =  new Date("2000-01-26T18:19:21.111Z")//new Date()
+var calendarData = getCalendarData(dates, today)
 var body = document.body
 var calendarDiv = document.createElement('div')
 calendarDiv.classList.add("calendar")
