@@ -73,52 +73,60 @@ function bar(dates, today=new Date()) {
     return(foo)
 }
 
-var dates = ["2000-01-05T18:19:21.111Z","2000-01-06T18:19:21.111Z","2000-01-15T18:19:21.111Z","2000-01-20T18:19:21.111Z","2000-01-22T18:19:21.111Z"]
-var today =  new Date("2000-01-26T18:19:21.111Z")//new Date()
-var calendarData = getCalendarData(dates, today)
-var body = document.body
-var calendarDiv = document.createElement('div')
-calendarDiv.classList.add("calendar")
+// var starts = ["2000-01-05T18:19:21.111Z","2000-01-06T18:19:21.111Z","2000-01-15T18:19:21.111Z","2000-01-20T18:19:21.111Z","2000-01-22T18:19:21.111Z"]
+// var today =  new Date("2000-01-26T18:19:21.111Z")//new Date()
+// generateCalendarHtml(starts)
 
-for (var i = Object.keys(calendarData).length-1; i >= 0; i--) {
-    var year = parseInt(Object.keys(calendarData)[i])
-    var yearDiv = document.createElement('div')
-    yearDiv.classList.add('year')
-    var yearText = document.createElement('div')
-    yearText.classList.add('year-text')
-    yearText.innerText = year
-    yearDiv.appendChild(yearText)
-    calendarDiv.appendChild(yearDiv)
+export function generateCalendarHtml(starts, today=new Date()) {
+    var calendarData = getCalendarData(starts, today)
+    var body = document.body
+    var calendarDiv = document.createElement('div')
+    calendarDiv.classList.add("calendar")
 
-    var monthsDiv = document.createElement('div')
-    monthsDiv.classList.add('months')
-    calendarDiv.appendChild(monthsDiv)
+    for (var i = Object.keys(calendarData).length-1; i >= 0; i--) {
+        var year = parseInt(Object.keys(calendarData)[i])
+        var yearDiv = document.createElement('div')
+        yearDiv.classList.add('year')
+        var yearText = document.createElement('div')
+        yearText.classList.add('year-text')
+        yearText.innerText = year
+        yearDiv.appendChild(yearText)
+        calendarDiv.appendChild(yearDiv)
 
-    for (var month in calendarData[year]) {
-        var monthDiv = document.createElement('div')
-        monthDiv.classList.add('month')
-        monthsDiv.appendChild(monthDiv)
-        var monthText = document.createElement('div')
-        monthText.classList.add('month-text')
-        monthText.innerText = month
-        monthDiv.appendChild(monthText)
-        var monthBlocks = document.createElement('div')
-        monthBlocks.classList.add('month-blocks')
-        monthDiv.appendChild(monthBlocks)
+        var monthsDiv = document.createElement('div')
+        monthsDiv.classList.add('months')
+        calendarDiv.appendChild(monthsDiv)
 
-        // <div class="month-text">September</div>
-        //     <div class="month-blocks">
-        //         <div class="month-block success-date">1</div>
+        for (var month in calendarData[year]) {
+            var monthDiv = document.createElement('div')
+            monthDiv.classList.add('month')
+            monthsDiv.appendChild(monthDiv)
+            var monthText = document.createElement('div')
+            monthText.classList.add('month-text')
+            monthText.innerText = month
+            monthDiv.appendChild(monthText)
+            var monthBlocks = document.createElement('div')
+            monthBlocks.classList.add('month-blocks')
+            monthDiv.appendChild(monthBlocks)
 
-        for (var day in calendarData[year][month]) {
-            var monthBlock = document.createElement('div')
-            monthBlock.classList.add('month-block')
-            monthBlock.classList.add(`${calendarData[year][month][day]}-date`)
-            monthBlock.innerText = day
-            monthBlocks.appendChild(monthBlock)
-            // console.log(`${year}:${month}:${day}-${calendarData[year][month][day]}`)
+            // <div class="month-text">September</div>
+            //     <div class="month-blocks">
+            //         <div class="month-block success-date">1</div>
+
+            for (var day in calendarData[year][month]) {
+                var monthBlock = document.createElement('div')
+                monthBlock.classList.add('month-block')
+                monthBlock.classList.add(`${calendarData[year][month][day]}-date`)
+                monthBlock.innerText = day
+                monthBlocks.appendChild(monthBlock)
+                // console.log(`${year}:${month}:${day}-${calendarData[year][month][day]}`)
+            }
         }
-    }
-}
 
-body.appendChild(calendarDiv)
+    }
+
+    body.innerHTML = ''
+    body.appendChild(calendarDiv)
+    var styleSheet = document.getElementById("pagestyle");
+    styleSheet.setAttribute("href", "calendar.css");
+}
