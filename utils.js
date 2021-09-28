@@ -42,3 +42,54 @@ export function dragAndDropReorder(habitData, start, end) {
         habitData[end] = tmp;
     }
 }
+
+export function getHabitBadges(starts, index, today=new Date()) {
+    /* exceptions */
+    if (typeof(starts) != typeof([])) throw new TypeError('$starts must be an array')
+    if (starts.length < 1) throw new RangeError('$starts can\'t be empty')
+    for (var i = 1; i < starts.length; i++) {
+        if (new Date(starts[i])-new Date(starts[i-1]) < 0) throw new RangeError('$starts must be in ascending order')
+    }
+    if (typeof(today) != typeof(new Date())) throw new TypeError('$today must be a date')
+    if (today-new Date(starts.length-1) < 0) throw new RangeError('$today must be the largest day')
+    if (index < 0 || index >= starts.length) throw new RangeError('$index not in starts')
+    
+    /* vars */
+    var badges = []
+    var n = starts.length
+    var best = 0
+    var better = true
+    starts = [...starts]
+    starts.push(today)
+
+    /* year */
+    var times = calculateTimeDiffArray(new Date(starts[index]), new Date(starts[index+1]))
+    if (times[0] > 0) {
+        badges.push({'class':'year', 'text':`${times[0]}-year`})
+        better = false
+    } else if (times[1] > 0) {
+        badges.push({'class':'month', 'text':`${times[1]}-month`})
+        better = false
+    } else if (Math.floor(times[2]/7) > 0) {
+        badges.push({'class':'week', 'text':`${Math.floor(times[2]/7)}-week`})
+        better = false
+    } else if (times[2] > 0) {
+        badges.push({'class':'day', 'text':`${times[2]}-day`})
+    }
+
+    /* best badge */
+    for (var i = 0; i < starts.length-1; i++) {
+        best = Math.max(best, new Date(starts[i+1]) - new Date(starts[i]))
+    }
+    if (new Date(starts[index+1])-new Date(starts[index]) >= best) {
+        badges.push({'class':'best', 'text':'best'})
+        better = false
+    }
+
+    /* better badge */
+    if (better && index > 0 && new Date(starts[index+1])-new Date(starts[index]) > new Date(starts[index])-new Date(starts[index-1])) {
+        badges.push({'class':'better', 'text':'better'})
+    }
+
+    return(badges)
+}

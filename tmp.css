@@ -1,0 +1,72 @@
+.body {
+    margin: 0;
+    padding: 0;
+}
+
+.row, .time-container-summary, .heading {
+    display: flex;
+    /* color: red; */
+    flex-direction: row;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.heading {
+    /* text-decoration: underline; */
+    border-bottom: rgb(221, 221, 221) 1px solid;
+}
+
+.row {
+    padding: 1rem;
+}
+
+.row:nth-of-type(2n+1) {
+    background-color: rgb(221, 221, 221);
+}
+
+.column, .time-subcontainer-summary {
+    /* color: greenyellow; */
+    /* display: block; */
+    width: 100%;
+    text-align: center;
+}
+
+.badge {
+    display: inline;
+    /* background-color: rgb(236, 236, 236);
+    border-radius: 10px;
+    padding: 0.2rem; */
+    /* padding: 0.5rem; */
+}
+
+.badge-text {
+    background-color: rgb(236, 236, 236);
+    border-radius: 10px;
+    padding: 0.2rem;
+}
+
+.better, .day {
+    background-color: rgb(142, 150, 194);
+    color: black;
+}
+
+.year {
+    background-color: rgb(157, 255, 181);
+    color: rgb(8, 98, 23);
+    border: solid 2px rgb(179, 130, 26);
+}
+
+.month {
+    background-color: rgb(157, 255, 181);
+    color: rgb(8, 98, 23);
+}
+
+.week {
+    background-color: rgb(120, 168, 245);
+    color: rgb(11, 41, 88);
+}
+
+.best {
+    background-color: rgb(223, 124, 124);
+    color: rgb(88, 11, 11);
+}

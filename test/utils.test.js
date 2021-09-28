@@ -1,6 +1,7 @@
 import { getItemInListIndex } from './../utils.js'
 import { calculateTimeDiffArray } from './../utils.js'
 import { dragAndDropReorder } from './../utils.js'
+import { getHabitBadges } from './../utils.js'
 
 /* getItemInListIndex */
 test('Get first item in list', function() {
@@ -167,4 +168,44 @@ test('invalid drag and drop', function() {
     expect(() => {
         dragAndDropReorder(habitData, -1, 4)
     }).toThrow(RangeError)
+})
+
+/* getHabitBadges */
+test('Get badges: exceptions', function() {
+    expect(() => {getHabitBadges("", 0, new Date())}).toThrow(TypeError)
+    expect(() => {getHabitBadges([], 0, new Date())}).toThrow(RangeError)
+    expect(() => {getHabitBadges(["2021-09-27T18:19:21.111Z", "2021-09-27T18:19:21.110Z"], 0, new Date())}).toThrow(RangeError)
+    expect(() => {getHabitBadges(["2021-09-27T18:19:21.111Z"], -1, new Date())}).toThrow(RangeError)
+    expect(() => {getHabitBadges(["2021-09-27T18:19:21.111Z"], 2, new Date())}).toThrow(RangeError)
+    expect(() => {getHabitBadges(["2021-09-27T18:19:21.111Z"], 0, new Date("2020-09-27T18:19:21.111Z"))}).toThrow(RangeError)
+    expect(() => {getHabitBadges(["2021-09-27T18:19:21.111Z"], 0, "")}).toThrow(TypeError)
+})
+
+test('Get badges: n=1', function() {
+    expect(getHabitBadges(["2021-09-27T18:19:21.111Z"], 0, new Date("2021-09-27T18:19:21.111Z"))).toEqual([{'class':'best','text':'best'}])
+    expect(getHabitBadges(["2021-09-27T18:19:21.111Z"], 0, new Date("2022-09-27T18:19:21.111Z"))).toEqual([{'class':'year','text':'1-year'}, {'class':'best','text':'best'}])
+    expect(getHabitBadges(["2021-09-27T18:19:21.111Z"], 0, new Date("2021-10-27T18:19:21.111Z"))).toEqual([{'class':'month','text':'1-month'}, {'class':'best','text':'best'}])
+    expect(getHabitBadges(["2021-09-01T18:19:21.111Z"], 0, new Date("2021-09-18T18:19:21.111Z"))).toEqual([{'class':'week','text':'2-week'}, {'class':'best','text':'best'}])
+    expect(getHabitBadges(["2021-09-01T18:19:21.111Z"], 0, new Date("2021-09-05T18:19:21.111Z"))).toEqual([{'class':'day','text':'4-day'}, {'class':'best','text':'best'}])
+})
+
+test('Get badges: n=2', function() {
+    var starts = ["2021-09-27T18:19:21.111Z","2021-09-27T18:19:22.111Z"]
+    expect(getHabitBadges(starts, 0, new Date("2021-09-27T18:19:24.111Z"))).toEqual([])
+    expect(getHabitBadges(starts, 1, new Date("2021-09-27T18:19:24.111Z"))).toEqual([{'class':'best','text':'best'}])
+
+    starts[0] = "2021-09-27T18:19:15.111Z"
+    expect(getHabitBadges(starts, 0, new Date("2021-09-27T18:19:24.111Z"))).toEqual([{'class':'best','text':'best'}])
+    expect(getHabitBadges(starts, 1, new Date("2021-09-27T18:19:24.111Z"))).toEqual([])
+})
+
+test('Get badges: n>2', function() {
+    // var starts = ["2021-09-27T18:19:21.111Z","2021-09-27T18:19:21.111Z","2021-09-27T18:19:21.111Z"]
+    var starts = ["2021-09-27T18:19:21.111Z","2021-09-28T18:19:21.111Z","2021-09-30T18:19:21.111Z","2021-12-27T18:19:21.111Z"]
+    expect(getHabitBadges(starts, 0, new Date("2025-12-27T18:19:21.111Z"))).toEqual([{'class':'day','text':'1-day'}])
+    expect(getHabitBadges(starts, 1, new Date("2025-12-27T18:19:21.111Z"))).toEqual([{'class':'day','text':'2-day'}, {'class':'better','text':'better'}])
+    expect(getHabitBadges(starts, 2, new Date("2025-12-27T18:19:21.111Z"))).toEqual([{'class':'month','text':'3-month'}])
+    expect(getHabitBadges(starts, 3, new Date("2025-12-27T18:19:21.111Z"))).toEqual([{'class':'year','text':'4-year'}, {'class':'best','text':'best'}])
+    starts[0] = "2015-09-27T18:19:21.111Z"
+    expect(getHabitBadges(starts, 0, new Date("2025-12-27T18:19:21.111Z"))).toEqual([{'class':'year','text':'6-year'}, {'class':'best','text':'best'}])
 })

@@ -126,3 +126,21 @@ button {
         max-width: none;
     }
 }
+
+
+/* summary */
+.summary-zone {
+    /* display: flex;
+    justify-content: center; */
+    
+}
+
+.summary-row {
+    display: flex;
+    justify-content: center;
+}
+
+.summary-time, .summary-dates {
+    text-align: center;
+    margin-right: 10rem;
+}

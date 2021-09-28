@@ -5,6 +5,7 @@ import {addNewHabitByIndex} from './crud.js'
 import {getItemInListIndex} from './utils.js'
 import {calculateTimeDiffArray} from './utils.js'
 import {dragAndDropReorder} from './utils.js'
+import {getHabitBadges} from './utils.js'
 
 
 // var habitData = {
@@ -236,6 +237,130 @@ function setUpBadgeDiv(habit) {
     return(badgeDiv)
 }
 
+function loadSummary(event) {
+    var summaryButtons = document.getElementsByClassName('summary-button')
+    var index = getItemInListIndex(event.target, summaryButtons)
+    var habitZone = document.getElementsByClassName('habit-zone')[0]
+    habitZone.innerHTML = ''
+    var body = document.getElementsByTagName('body')[0]
+
+    var summaryZone = document.createElement('div')
+    summaryZone.classList.add('summary-zone')
+    var heading = document.createElement('div')
+    heading.classList.add('heading')
+    summaryZone.appendChild(heading)
+    var headings = ['Date', 'Time', 'Badges']
+    for (var i = 0; i < headings.length; i++) {
+        var column = document.createElement('div')
+        column.innerText = headings[i]
+        column.classList.add('column')
+        heading.appendChild(column)
+    }
+
+    var habitData = getHabitData()
+    var startDays = habitData[index]['start']
+
+    for (var i = startDays.length-1; i >= 0; i--) {
+        /* date */
+        var foo = [
+        "2021-09-08T22:00:00.406Z", // 08-11 | 3 days
+        "2021-09-11T22:00:00.406Z", // 11-13 | 2 days
+        "2021-09-13T22:00:00.406Z", // 13-14 | 1 days
+        "2021-09-14T22:00:00.406Z", // 14-18 | 4 day
+        "2021-09-18T22:00:00.604Z", // 18-19 | 1 days
+        "2021-09-19T22:00:00.604Z", // 19-20 | 1 day
+        "2021-09-20T22:00:00.604Z", // 20-21 | 1 day
+        "2021-09-21T22:00:00.604Z", // 21-22 | 1 day
+        "2021-09-22T22:00:00.604Z", // 22-23 | 1 day
+        "2021-09-23T22:00:00.604Z", // 23-24 | 1 day
+        "2021-09-24T22:00:00.604Z", // 24-25 | 1 day
+        "2021-09-25T22:00:00.604Z", // 25-26 | 1 day
+        "2021-09-26T22:00:00.604Z"  // 26-cu | 1.5 day
+        ]
+        var row = document.createElement('div')
+        row.classList.add('row')
+        var column = document.createElement('div')
+        column.classList.add('column')
+        column.classList.add('date')
+        if (i == startDays.length-1) {
+            column.innerText = new Date(startDays[i]).toISOString().split('T')[0] + ' - ' + 'current'
+            row.appendChild(column)
+        } else {
+            column.innerText = new Date(startDays[i]).toISOString().split('T')[0] + ' - ' + new Date(startDays[i+1]).toISOString().split('T')[0]
+            row.appendChild(column)
+        }
+
+        /* time */
+        var column = document.createElement('div')
+        column.classList.add('column')
+        column.classList.add('time')
+        if (i == startDays.length -1) {
+            var times = calculateTimeDiffArray(new Date(startDays[i]), new Date())
+        } else {
+            var times = calculateTimeDiffArray(new Date(startDays[i]), new Date(startDays[i+1]))
+        }
+        column.innerHTML = `<div class="time-container-summary">
+        <div class="time-subcontainer-summary">
+            <div class="time-value">${times[0]}</div>
+            <div class="time-name">Y</div>
+        </div>
+        <div class="time-subcontainer-summary">
+            <div class="time-value">${times[1]}</div>
+            <div class="time-name">M</div>
+        </div>
+        <div class="time-subcontainer-summary">
+            <div class="time-value">${times[2]}</div>
+            <div class="time-name">D</div>
+        </div>
+        <div class="time-subcontainer-summary">
+            <div class="time-value">${times[3]}</div>
+            <div class="time-name">H</div>
+        </div>
+        <div class="time-subcontainer-summary">
+            <div class="time-value">${times[4]}</div>
+            <div class="time-name">M</div>
+        </div>
+        <div class="time-subcontainer-summary">
+            <div class="time-value">${times[5]}</div>
+            <div class="time-name">S</div>
+        </div>
+    </div>`
+
+        row.appendChild(column)
+
+        /* badges */
+        var column = document.createElement('div')
+        column.classList.add('column')
+        column.classList.add('badges')
+        // column.innerText = 'b'
+        // column.innerText = getHabitBadges(habitData[index]).toString()
+        var badgeZone = document.createElement('div')
+        badgeZone.classList.add('badge-zone')
+
+        // TODO: 1) need current with updates 2) busted
+        var badges = getHabitBadges(habitData[index]['start'], i)
+        for (var j = 0; j < badges.length; j++) {
+            var badge = document.createElement('div')
+            badge.classList.add('badge')
+            var badgeText = document.createElement('span')
+            badgeText.classList.add('badge-text')
+            badgeText.classList.add(badges[j]['class'])
+            badgeText.innerText = badges[j]['text']
+
+            badge.appendChild(badgeText)
+            badgeZone.appendChild(badge)
+        }
+
+        column.appendChild(badgeZone)
+        row.appendChild(column)
+        summaryZone.appendChild(row)
+    }
+    body.appendChild(summaryZone)
+    // swapStyleSheet("tmp.css")
+    var styleSheet = document.getElementById("pagestyle");
+    styleSheet.setAttribute("href", "tmp.css");
+}
+
 function refreshHabitZone() {
     var habitZone = document.getElementsByClassName('habit-zone')[0];
     habitZone.innerHTML = '' // TODO: is this shoddy?
@@ -316,6 +441,13 @@ function refreshHabitZone() {
         habitDeleteButton.innerText = 'Delete'
         habitDeleteButton.addEventListener('click', deleteHabit)
         habitReset.appendChild(habitDeleteButton)
+
+        // summary button
+        var summaryButton = document.createElement('button')
+        summaryButton.classList.add('summary-button')
+        summaryButton.innerText = 'Summary'
+        summaryButton.addEventListener('click', loadSummary)
+        habitReset.appendChild(summaryButton)
 
         // undo delete button
         // var habitUndoDeleteButton = document.createElement('button')
