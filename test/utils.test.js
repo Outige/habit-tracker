@@ -2,6 +2,7 @@ import { getItemInListIndex } from './../utils.js'
 import { calculateTimeDiffArray } from './../utils.js'
 import { dragAndDropReorder } from './../utils.js'
 import { getHabitBadges } from './../utils.js'
+import { getCalendarData } from './../utils.js'
 
 /* getItemInListIndex */
 test('Get first item in list', function() {
@@ -208,4 +209,110 @@ test('Get badges: n>2', function() {
     expect(getHabitBadges(starts, 3, new Date("2025-12-27T18:19:21.111Z"))).toEqual([{'class':'year','text':'4-year'}, {'class':'best','text':'best'}])
     starts[0] = "2015-09-27T18:19:21.111Z"
     expect(getHabitBadges(starts, 0, new Date("2025-12-27T18:19:21.111Z"))).toEqual([{'class':'year','text':'6-year'}, {'class':'best','text':'best'}])
+})
+
+
+/* getCalendarData */
+test('Get calendarData: stick to 1 month; start and end at ends', function() {
+    /* input */
+    var starts = ["2000-01-01T18:19:21.111Z","2000-01-01T18:19:21.111Z","2000-01-07T18:19:21.111Z","2000-01-08T18:19:21.111Z","2000-01-09T18:19:21.111Z"]
+
+    /* output */
+    var output = {}
+    output['2000'] = {}
+    output['2000']['January'] = {}
+    // success
+    for (var i = 1; i < 32; i++) {
+        output['2000']['January'][i] = 'success'
+    }
+    // fail
+    [1, 7, 8, 9].forEach(function(day) {
+        output['2000']['January'][day] = 'fail'
+    });
+    // future
+    output['2000']['January'][31] = 'future'
+    expect(getCalendarData(starts, new Date("2000-01-31T18:19:21.111Z"))).toEqual(output)
+})
+
+test('Get calendarData: stick to 1 month; start and end in the middle', function() {
+    /* input */
+    var starts = ["2000-01-05T18:19:21.111Z","2000-01-06T18:19:21.111Z","2000-01-15T18:19:21.111Z","2000-01-20T18:19:21.111Z","2000-01-22T18:19:21.111Z"]
+
+    /* output */
+    var output = {}
+    output['2000'] = {}
+    output['2000']['January'] = {}
+    // past
+    for (var i = 1; i < 5; i++) {
+        output['2000']['January'][i] = 'past'
+    }
+    // success
+    for (var i = 5; i < 26; i++) {
+        output['2000']['January'][i] = 'success'
+    }
+    // fail
+    [6, 15, 20, 22].forEach(function(day) {
+        output['2000']['January'][day] = 'fail'
+    });
+    // future
+    for (var i = 26; i < 32; i++) {
+        output['2000']['January'][i] = 'future'
+    }
+    expect(getCalendarData(starts, new Date("2000-01-26T18:19:21.111Z"))).toEqual(output)
+})
+
+test('Get calendarData: cross month barrier by 1 day + leap year', function() {
+    /* input */
+    var starts = ["2000-01-01T18:19:21.111Z","2000-01-01T18:19:21.111Z","2000-01-07T18:19:21.111Z","2000-01-08T18:19:21.111Z","2000-01-09T18:19:21.111Z"]
+
+    /* output */
+    var output = {}
+    output['2000'] = {}
+    output['2000']['January'] = {}
+    // success
+    for (var i = 1; i < 32; i++) {
+        output['2000']['January'][i] = 'success'
+    }
+    // fail
+    [1, 7, 8, 9].forEach(function(day) {
+        output['2000']['January'][day] = 'fail'
+    });
+    // future
+    output['2000']['February'] = {}
+    for (var i = 1; i < 30; i++) {
+        output['2000']['February'][i] = 'future'
+    }
+    expect(getCalendarData(starts, new Date("2000-02-01T18:19:21.111Z"))).toEqual(output)
+})
+
+test('Get calendarData: cross year & month barier', function() {
+    /* input */
+    var starts = ["1999-12-25T18:19:21.111Z", "2000-01-01T18:19:21.111Z","2000-01-03T18:19:21.111Z","2000-01-07T18:19:21.111Z","2000-01-08T18:19:21.111Z","2000-01-09T18:19:21.111Z"]
+
+    /* output */
+    var output = {}
+    output['1999'] = {}
+    output['1999']['December'] = {}
+    output['2000'] = {}
+    output['2000']['January'] = {}
+    // success
+    for (var i = 1; i < 32; i++) {
+        output['1999']['December'][i] = 'success'
+    }
+    for (var i = 1; i < 32; i++) {
+        output['2000']['January'][i] = 'success'
+    }
+    // fail
+    [1, 3, 7, 8, 9].forEach(function(day) {
+        output['2000']['January'][day] = 'fail'
+    });
+    // future
+    for (var i = 28; i < 32; i++) {
+        output['2000']['January'][i] = 'future'
+    }
+    // past
+    for (var i = 1; i < 25; i++) {
+        output['1999']['December'][i] = 'past'
+    }
+    expect(getCalendarData(starts, new Date("2000-01-28T18:19:21.111Z"))).toEqual(output)
 })

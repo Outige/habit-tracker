@@ -93,3 +93,57 @@ export function getHabitBadges(starts, index, today=new Date()) {
 
     return(badges)
 }
+
+export function getCalendarData(starts, today=new Date()) {
+    /* vars */
+    var calendarData = {}
+    starts = [...starts] // TODO: made a deep copy as I mutate the data. Not good. Lazy
+    
+    /* add success starts */
+    var nextDate = new Date(today)
+    var first = new Date(starts[0])
+    while (first <= nextDate) {
+        var year = nextDate.getFullYear()
+        var month = nextDate.toLocaleString('default', { month: 'long' })
+        var day = nextDate.getUTCDate()
+        if (calendarData[year] == undefined) calendarData[year] = {}
+        if (calendarData[year][month] == undefined) calendarData[year][month] = {}
+        if (calendarData[year][month][day] == undefined) calendarData[year][month][day] = 'success'
+        nextDate.setDate(nextDate.getDate() - 1);
+    }
+    
+
+    /* add fail starts */
+    for (var i = 1; i < starts.length; i++) {
+        starts[i] = new Date(starts[i])
+        var year = starts[i].getFullYear()
+        var month = starts[i].toLocaleString('default', { month: 'long' })
+        var day = starts[i].getUTCDate()
+        if (calendarData[year] == undefined) calendarData[year] = {}
+        if (calendarData[year][month] == undefined) calendarData[year][month] = {}
+        calendarData[year][month][day] = 'fail'
+    }
+
+    /* add fututre starts */
+    nextDate = new Date(today)
+    while (nextDate.getFullYear() + nextDate.getMonth() <= today.getFullYear() + today.getMonth()) {
+        var year = nextDate.getFullYear()
+        var month = nextDate.toLocaleString('default', { month: 'long' })
+        var day = nextDate.getUTCDate()
+        calendarData[year][month][day] = 'future'
+        nextDate.setDate(nextDate.getDate() + 1);
+    }
+
+    /* add past starts */
+    nextDate = new Date(starts[0])
+    nextDate.setDate(nextDate.getDate() - 1);
+    var first = new Date(starts[0])
+    while (nextDate.getFullYear() + nextDate.getMonth() == first.getFullYear() + first.getMonth()) {
+        var year = nextDate.getFullYear()
+        var month = nextDate.toLocaleString('default', { month: 'long' })
+        var day = nextDate.getUTCDate()
+        calendarData[year][month][day] = 'past'
+        nextDate.setDate(nextDate.getDate() - 1);
+    }
+    return(calendarData)
+}

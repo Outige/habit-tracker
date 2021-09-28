@@ -1,0 +1,58 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+
+.calendar {
+    /* background-color: black; */
+    border: 1px solid black;
+    width: 12rem;
+    /* width: 10%; */
+    margin: 5rem auto;
+}
+
+.year-text {
+    font-weight: bold;
+    text-align: center;
+}
+
+/* .months {
+    display: flex;
+    justify-content: center;
+}
+
+.month {
+    width: 200px;
+} */
+
+.month-blocks {
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: center; */
+    /* flex-grow: 1; */
+    margin-left: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.month-block {
+    width: 25px;
+    height: 25px;
+    border: 1px solid black;
+}
+
+.future-date {
+    background-color: rgba(189, 189, 189, 0.5);
+}
+
+.past-date {
+    /* background-color: rgba(189, 189, 189, 0.5); */
+    opacity: 0.4;
+}
+
+.success-date {
+    background-color: rgb(159, 219, 179);
+}
+
+.fail-date {
+    background-color: rgb(219, 159, 159);
+}

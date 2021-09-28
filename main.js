@@ -6,6 +6,7 @@ import {getItemInListIndex} from './utils.js'
 import {calculateTimeDiffArray} from './utils.js'
 import {dragAndDropReorder} from './utils.js'
 import {getHabitBadges} from './utils.js'
+import {generateCalendarHtml} from './calendar.js'
 
 
 // var habitData = {
@@ -449,14 +450,13 @@ function refreshHabitZone() {
         summaryButton.addEventListener('click', loadSummary)
         habitReset.appendChild(summaryButton)
 
-        // undo delete button
-        // var habitUndoDeleteButton = document.createElement('button')
-        // habitUndoDeleteButton.classList.add('undo-delete-button')
-        // habitUndoDeleteButton.innerText = 'Undo Delete'
-        // habitReset.appendChild(habitUndoDeleteButton)
-        // // habitUndoDeleteButton.style.display = 'none'
-        // habitUndoDeleteButton.addEventListener('click', undoDelete)
+        // calendar button
+        var calendarButton = document.createElement('button')
+        calendarButton.classList.add('calendar-button')
+        calendarButton.innerText = 'Calendar'
 
+        calendarButton.addEventListener('click', loadCalendar)
+        habitReset.appendChild(calendarButton)
 
         // adppend all the childeren
         habitBody.appendChild(habitReset)
@@ -484,6 +484,13 @@ function refreshHabitZone() {
     habitZone.appendChild(newHabit)
     newHabitButton.addEventListener('click', addNewHabit)
     setUpDragAndDrop()
+}
+
+function loadCalendar(event) {
+    var calendarButtons = document.getElementsByClassName('calendar-button')
+    var index = getItemInListIndex(event.target, calendarButtons)
+    var habitData = getHabitData()
+    generateCalendarHtml(habitData[index]['start'])
 }
 
 function refreshTime() {
