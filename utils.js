@@ -128,6 +128,10 @@ export function getCalendarData(starts, today=new Date()) {
     nextDate = new Date(today)
     while (nextDate.getFullYear() + nextDate.getMonth() <= today.getFullYear() + today.getMonth()) {
         var year = nextDate.getFullYear()
+        if (calendarData[year] == undefined) {
+            break
+        }
+        
         var month = nextDate.toLocaleString('default', { month: 'long' })
         var day = nextDate.getUTCDate()
         calendarData[year][month][day] = 'future'
