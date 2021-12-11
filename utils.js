@@ -44,14 +44,19 @@ export function dragAndDropReorder(habitData, start, end) {
 }
 
 export function getHabitPercent(starts, today=new Date()) {
-    var percent = 0
-
-    console.log(starts)
     var difference = today.getTime() - (new Date(starts[0])).getTime();
     difference = Math.ceil(difference / (1000 * 3600 * 24));
     console.log(difference)
 
-    return(Math.min(100, (starts.length-1)/difference*100).toFixed(2))
+    return(Math.min(100, (starts.length-1)/difference*100).toFixed(1))
+}
+
+export function getHabitAverageRelapseTime(starts, today=new Date()) {
+    var difference = today.getTime() - (new Date(starts[0])).getTime();
+    difference = Math.ceil(difference / (1000 * 3600 * 24));
+    console.log(difference)
+
+    return(Math.ceil(difference/starts.length).toFixed(1))
 }
 
 export function getHabitBadges(starts, index, today=new Date()) {
