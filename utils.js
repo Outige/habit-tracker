@@ -43,6 +43,17 @@ export function dragAndDropReorder(habitData, start, end) {
     }
 }
 
+export function getHabitPercent(starts, today=new Date()) {
+    var percent = 0
+
+    console.log(starts)
+    var difference = today.getTime() - (new Date(starts[0])).getTime();
+    difference = Math.ceil(difference / (1000 * 3600 * 24));
+    console.log(difference)
+
+    return(Math.min(100, (starts.length-1)/difference*100).toFixed(2))
+}
+
 export function getHabitBadges(starts, index, today=new Date()) {
     /* exceptions */
     if (typeof(starts) != typeof([])) throw new TypeError('$starts must be an array')

@@ -5,6 +5,7 @@ import {addNewHabitByIndex} from './crud.js'
 import {getItemInListIndex} from './utils.js'
 import {calculateTimeDiffArray} from './utils.js'
 import {dragAndDropReorder} from './utils.js'
+import {getHabitPercent} from './utils.js'
 import {getHabitBadges} from './utils.js'
 import {generateCalendarHtml} from './calendar.js'
 
@@ -377,7 +378,7 @@ function refreshHabitZone() {
         habitTitle.classList.add('habit-title')
         
         var habitTitleSpan = document.createElement('span');
-        habitTitleSpan.innerHTML = habitData[key]['title']
+        habitTitleSpan.innerHTML = `${habitData[key]['title']}  ${getHabitPercent(habitData[key]['start'])}%`
         habitTitle.appendChild(habitTitleSpan)
         habit.appendChild(habitTitle)
         habit.appendChild(setUpBadgeDiv(habitData[key]))

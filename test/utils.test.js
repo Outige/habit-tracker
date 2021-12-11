@@ -285,6 +285,33 @@ test('Get calendarData: cross month barrier by 1 day + leap year', function() {
     expect(getCalendarData(starts, new Date("2000-02-01T18:19:21.111Z"))).toEqual(output)
 })
 
+test('Get calendarData: December', function() {
+    /* input */
+    var starts = ["1999-12-25T18:19:21.111Z", "1999-12-26T18:19:21.111Z"]
+
+    /* output */
+    var output = {}
+    output['1999'] = {}
+    output['1999']['December'] = {}
+    // success
+    for (var i = 25; i < 28; i++) {
+        output['1999']['December'][i] = 'success'
+    }
+    // fail
+    [26].forEach(function(day) {
+        output['1999']['December'][day] = 'fail'
+    });
+    // future
+    for (var i = 28; i < 32; i++) {
+        output['1999']['December'][i] = 'future'
+    }
+    // past
+    for (var i = 1; i < 25; i++) {
+        output['1999']['December'][i] = 'past'
+    }
+    expect(getCalendarData(starts, new Date("1999-12-28T18:19:21.111Z"))).toEqual(output)
+})
+
 test('Get calendarData: cross year & month barier', function() {
     /* input */
     var starts = ["1999-12-25T18:19:21.111Z", "2000-01-01T18:19:21.111Z","2000-01-03T18:19:21.111Z","2000-01-07T18:19:21.111Z","2000-01-08T18:19:21.111Z","2000-01-09T18:19:21.111Z"]

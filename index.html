@@ -1,40 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Habit Tracker</title>
-<!--  -->
+    <!--  -->
     <meta property="og:title" content="Habit Tracker - Own your future">
     <meta property="title" content="Habit Tracker - Own your future">
-    
+
     <meta name="description" content="Most of life is decided by your habits. So why don't
     you choose good habits and become the best you!">
     <meta name="og:description" content="Most of life is decided by your habits. So why don't
     you choose good habits and become the best you!">
-    
+
     <meta property="og:image" content="https://image.flaticon.com/icons/png/512/2647/2647625.png">
     <meta property="image" content="https://image.flaticon.com/icons/png/512/2647/2647625.png">
-<!--  -->
-    <link rel="shortcut icon" type="image/jpg" href="img/punctuality.png"/>
+    <!--  -->
+    <link rel="shortcut icon" type="image/jpg" href="img/punctuality.png" />
     <link rel="stylesheet" href="stlye.css" id="pagestyle">
     <script type="module" defer src="main.js"></script>
 </head>
+
 <body>
     <div class="habit-zone">
-        <div class="habit">
-            <div class="habit-title">
-                <span>P</span>
+        <div class="habit" draggable="true">
+            <div class="habit-title"><span>Masturbation</span></div>
+            <div class="badge-space">
+                <div class="badge year"><span class="badge-text">1-year</span></div>
+                <div class="badge best"><span class="badge-text">best</span></div>
             </div>
             <div class="habit-body">
                 <div class="time-container">
                     <div class="time-subcontainer">
-                        <div class="time-value">00</div>
+                        <div class="time-value">1</div>
                         <div class="time-name">Year</div>
                     </div>
                     <div class="time-subcontainer">
-                        <div class="time-value">01</div>
+                        <div class="time-value">3</div>
+                        <div class="time-name">Month</div>
+                    </div>
+                    <div class="time-subcontainer">
+                        <div class="time-value">1</div>
+                        <div class="time-name">Day</div>
+                    </div>
+                    <div class="time-subcontainer">
+                        <div class="time-value">16</div>
+                        <div class="time-name">Hour</div>
+                    </div>
+                    <div class="time-subcontainer">
+                        <div class="time-value">49</div>
+                        <div class="time-name">Minute</div>
+                    </div>
+                    <div class="time-subcontainer">
+                        <div class="time-value">44</div>
+                        <div class="time-name">Second</div>
+                    </div>
+                </div>
+                <div class="reset-div"><button class="reset-button">Reset</button><button class="undo-reset-button"
+                        style="display: none;">Undo Reset</button><button class="delete-button">Delete</button><button
+                        class="summary-button">Summary</button><button class="calendar-button">Calendar</button></div>
+            </div>
+        </div>
+        <div class="habit" draggable="true">
+            <div class="habit-title"><span>Exercise</span></div>
+            <div class="badge-space">
+                <div class="badge month"><span class="badge-text">3-month</span></div>
+                <div class="badge best"><span class="badge-text">best</span></div>
+            </div>
+            <div class="habit-body">
+                <div class="time-container">
+                    <div class="time-subcontainer">
+                        <div class="time-value">0</div>
+                        <div class="time-name">Year</div>
+                    </div>
+                    <div class="time-subcontainer">
+                        <div class="time-value">3</div>
                         <div class="time-name">Month</div>
                     </div>
                     <div class="time-subcontainer">
@@ -42,102 +84,64 @@
                         <div class="time-name">Day</div>
                     </div>
                     <div class="time-subcontainer">
-                        <div class="time-value">17</div>
+                        <div class="time-value">16</div>
                         <div class="time-name">Hour</div>
                     </div>
                     <div class="time-subcontainer">
-                        <div class="time-value">52</div>
+                        <div class="time-value">49</div>
                         <div class="time-name">Minute</div>
                     </div>
                     <div class="time-subcontainer">
-                        <div class="time-value">10</div>
+                        <div class="time-value">44</div>
                         <div class="time-name">Second</div>
                     </div>
                 </div>
-                <div class="reset-div">
-                    <button class="reset-button">Reset</button>
-                    <button class="delete-button">Delete</button>
-                </div>
+                <div class="reset-div"><button class="reset-button">Reset</button><button class="undo-reset-button"
+                        style="display: none;">Undo Reset</button><button class="delete-button">Delete</button><button
+                        class="summary-button">Summary</button><button class="calendar-button">Calendar</button></div>
             </div>
         </div>
-
-
-        <div class="habit">
-            <div class="habit-title">
-                <span>M</span>
+        <div class="habit" draggable="true">
+            <div class="habit-title"><span>Food binge</span></div>
+            <div class="badge-space">
+                <div class="badge month"><span class="badge-text">3-month</span></div>
+                <div class="badge best"><span class="badge-text">best</span></div>
             </div>
             <div class="habit-body">
-                <div class="count">
-                    20
+                <div class="time-container">
+                    <div class="time-subcontainer">
+                        <div class="time-value">0</div>
+                        <div class="time-name">Year</div>
+                    </div>
+                    <div class="time-subcontainer">
+                        <div class="time-value">3</div>
+                        <div class="time-name">Month</div>
+                    </div>
+                    <div class="time-subcontainer">
+                        <div class="time-value">-1</div>
+                        <div class="time-name">Day</div>
+                    </div>
+                    <div class="time-subcontainer">
+                        <div class="time-value">16</div>
+                        <div class="time-name">Hour</div>
+                    </div>
+                    <div class="time-subcontainer">
+                        <div class="time-value">49</div>
+                        <div class="time-name">Minute</div>
+                    </div>
+                    <div class="time-subcontainer">
+                        <div class="time-value">44</div>
+                        <div class="time-name">Second</div>
+                    </div>
                 </div>
-                <div class="reset-div">
-                    <button class="reset-button">Reset</button>
-                </div>
+                <div class="reset-div"><button class="reset-button">Reset</button><button class="undo-reset-button"
+                        style="display: none;">Undo Reset</button><button class="delete-button">Delete</button><button
+                        class="summary-button">Summary</button><button class="calendar-button">Calendar</button></div>
             </div>
         </div>
-
-        <div class="habit">
-            <div class="habit-title">
-                <span>M</span>
-            </div>
-            <div class="habit-body">
-                <div class="count">
-                    20
-                </div>
-                <div class="reset-div">
-                    <button class="reset-button">Reset</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="habit">
-            <div class="habit-title">
-                <span>M</span>
-            </div>
-            <div class="habit-body">
-                <div class="count">
-                    20
-                </div>
-                <div class="reset-div">
-                    <button class="reset-button">Reset</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="habit">
-            <div class="habit-title">
-                <span>M</span>
-            </div>
-            <div class="habit-body">
-                <div class="count">
-                    20
-                </div>
-                <div class="reset-div">
-                    <button class="reset-button">Reset</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="habit">
-            <div class="habit-title">
-                <span>M</span>
-            </div>
-            <div class="habit-body">
-                <div class="count">
-                    20
-                </div>
-                <div class="reset-div">
-                    <button class="reset-button">Reset</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="new-habit">
-            <input type="text" value="(enter habit name)">
-            <button class="new-button">New Habit</button>
-        </div>
-        
-        
+        <div class="new-habit"><input type="text" placeholder="(enter habit name)"><button class="new-button">New
+                Habit</button></div>
     </div>
 </body>
+
 </html>
